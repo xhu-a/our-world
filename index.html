@@ -1473,6 +1473,55 @@
   @media (prefers-reduced-motion: reduce){ .hotspot .icon::before, .item-grid.dealing .item-card, .item-grid.shuffling .item-card{ animation:none !important; } }
 </style>
 
+<style>
+/* ===== v13: notifications, storage meter, memory tabs, cleaner phone layout ===== */
+#ctrlDock > #wtbBell{ position:relative; flex:none; width:40px; height:40px; padding:0; border-radius:50%; background:rgba(19,15,18,.7); border:1px solid rgba(226,190,235,.35); color:var(--gold); display:flex; align-items:center; justify-content:center; cursor:pointer; pointer-events:auto; }
+#wtbBell svg{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+#wtbBell b{ position:absolute; top:-4px; right:-4px; min-width:18px; height:18px; padding:0 4px; box-sizing:border-box; border-radius:9px; background:#f6a0c8; color:#1a0f24; font:700 11px/18px system-ui,sans-serif; text-align:center; }
+#wtbBell b[hidden]{ display:none; }
+#wtbSheet{ position:fixed; z-index:330; left:max(12px,env(safe-area-inset-left)); bottom:calc(env(safe-area-inset-bottom,0px) + 76px); width:min(390px,calc(100vw - 24px)); max-height:min(68vh,560px); max-height:min(68dvh,560px); overflow:auto; overscroll-behavior:contain; box-sizing:border-box; padding:16px; border-radius:18px; background:linear-gradient(160deg,rgba(38,26,50,.97),rgba(14,9,30,.98)); border:1px solid rgba(226,190,235,.32); box-shadow:0 24px 60px rgba(0,0,0,.55); color:var(--cream); font-family:'Cormorant Garamond',serif; opacity:0; visibility:hidden; transform:translateY(10px); pointer-events:none; transition:opacity .25s, transform .25s, visibility .25s; }
+#wtbSheet.open{ opacity:1; visibility:visible; transform:none; pointer-events:auto; }
+.nf-h{ font-size:20px; margin:0 0 8px; }
+.nf-empty{ font-style:italic; font-size:14px; color:rgba(255,246,252,.55); line-height:1.5; padding:6px 2px; }
+.nf-meter{ padding:12px; border-radius:12px; background:rgba(255,255,255,.05); margin-bottom:16px; }
+.nf-mh{ display:flex; justify-content:space-between; gap:10px; font-size:15px; margin-bottom:8px; }
+.nf-bar{ height:8px; border-radius:4px; background:rgba(255,255,255,.12); overflow:hidden; }
+.nf-bar i{ display:block; height:100%; border-radius:4px; background:#9fdcae; }
+.nf-meter.warn .nf-bar i{ background:#f0c56b; } .nf-meter.bad .nf-bar i{ background:#ef7b8c; }
+.nf-meter small{ display:block; margin-top:8px; font-size:12.5px; line-height:1.4; color:rgba(255,246,252,.55); }
+.nf-it{ display:block; width:100%; text-align:left; background:none; border:0; border-top:1px solid rgba(226,190,235,.14); color:inherit; font:inherit; font-size:15px; line-height:1.4; padding:10px 2px; cursor:pointer; }
+.nf-it b{ color:var(--gold); font-weight:600; }
+.nf-it small, #wtbNToast small{ display:block; font-size:12px; color:rgba(255,246,252,.5); margin-top:2px; }
+#wtbNToast{ position:fixed; z-index:320; top:calc(env(safe-area-inset-top,0px) + 112px); left:50%; width:min(88vw,340px); box-sizing:border-box; padding:12px 16px; border-radius:14px; background:linear-gradient(160deg,rgba(38,26,50,.97),rgba(14,9,30,.98)); border:1px solid rgba(226,190,235,.4); box-shadow:0 16px 40px rgba(0,0,0,.5); color:var(--cream); font-family:'Cormorant Garamond',serif; font-size:15px; line-height:1.4; opacity:0; pointer-events:none; transform:translate(-50%,-14px); transition:opacity .4s, transform .5s; }
+#wtbNToast.show{ opacity:1; pointer-events:auto; transform:translate(-50%,0); }
+#wtbNToast b{ color:var(--gold); }
+.nf-tabs{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:0 0 14px; }
+.nf-tabs button{ padding:8px 2px; border-radius:12px; border:1px solid rgba(226,190,235,.25); background:rgba(255,255,255,.04); color:rgba(255,246,252,.75); font-family:'Cormorant Garamond',serif; font-size:14px; cursor:pointer; }
+.nf-tabs button i{ font-style:normal; opacity:.6; margin-left:3px; font-size:12px; }
+.nf-tabs button.on{ background:rgba(246,160,200,.22); border-color:rgba(246,160,200,.7); color:var(--cream); }
+.mem-stamp{ line-height:1.5; }
+@media (max-width:600px){
+  .panel{ padding:26px 18px calc(24px + env(safe-area-inset-bottom,0px)) !important; max-height:82dvh !important; }
+  .panel input,.panel textarea,.panel select{ font-size:16px !important; }
+  .mem-card{ padding:12px; margin-bottom:14px; }
+  .mem-actions button{ min-height:34px; min-width:34px; }
+  .hotspot{ max-width:84px; }
+  #wtbPresence{ max-width:calc(100vw - 28px); }
+}
+@media (max-width:380px){ .hotspot .lbl{ font-size:12px !important; } .panel{ padding-left:14px !important; padding-right:14px !important; } }
+/* v13.1: calmer, smoother shuffle */
+.hotspot .icon::before{ animation:none !important; }
+.lg-shuf{ position:relative; padding-bottom:6px; }
+.lg-shuf span{ font-size:12.5px; opacity:.8; }
+.lg-shuf.auto span{ color:var(--gold); opacity:1; }
+.lg-shuf.auto::after{ content:""; position:absolute; left:0; bottom:0; height:2px; border-radius:2px; background:rgba(246,160,200,.8); animation:lgShufBar 2.2s linear both; }
+@keyframes lgShufBar{ from{ width:0; } to{ width:100%; } }
+.item-grid .item-card{ will-change:transform,opacity; }
+.item-grid.dealing .item-card{ animation:lgDeal2 .62s cubic-bezier(.22,1,.36,1) both; animation-delay:calc(var(--d,0) * 45ms); }
+.item-grid.shuffling .item-card{ animation:lgOut2 .4s cubic-bezier(.5,0,.75,.4) both; animation-delay:calc(var(--d,0) * 24ms); }
+@keyframes lgDeal2{ from{ opacity:0; transform:translateY(20px) scale(.96); } to{ opacity:1; transform:none; } }
+@keyframes lgOut2{ to{ opacity:0; transform:translateY(-12px) scale(.95); } }
+</style>
 </head>
 <body>
 
@@ -1917,10 +1966,77 @@ function onYouTubeIframeAPIReady(){
   function deviceName(){ return loadLS('wtb_device', '') || 'unnamed device'; }
   function logEvent(action){
     const log = loadLS('wtb_log', []);
-    log.push({ t: Date.now(), device: deviceName(), action });
+    log.push({ t: Date.now(), device: deviceName(), did: nfDid(), action });
     while(log.length > 100) log.shift();
     saveLS('wtb_log', log);
   }
+
+  // ---------- v13: notifications, cloud meter, memory tabs ----------
+  const NF_KEY='wtb_notifs', NF_READ='wtb_nf_read', NF_T='wtb_nf_t';
+  const MEMT={ photo:m=>m.photo&&!m.video, video:m=>!!m.video, note:m=>!m.photo&&!m.video };
+  let nfVoices=[];
+  function nfDid(){ let d=loadLS('wtb_devid',''); if(!d){ d='d'+Math.random().toString(36).slice(2,10)+Date.now().toString(36); saveLS('wtb_devid',d); } return d; }
+  const nfTime=t=>{ try{ return new Date(t).toLocaleString(undefined,{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } };
+  function nfSection(a){ a=String(a).toLowerCase();
+    if(/rating|rated|movie|watch/.test(a)) return ['Movie Hall','movies'];
+    if(/voice/.test(a)) return ['Voice','voice-sakura'];
+    if(/memory|photo|video/.test(a)) return ['Plant a Memory','memories'];
+    if(/wish/.test(a)) return ['Wishes','wishes'];
+    if(/plan|date|calendar/.test(a)) return ['Calendar','calendar'];
+    return ['The World',''];
+  }
+  function nfBadge(){ const b=document.getElementById('wtbBadge'); if(!b) return; const r=loadLS(NF_READ,0), n=loadLS(NF_KEY,[]).filter(x=>x.t>r).length; b.textContent=n>9?'9+':n; b.hidden=!n; document.title=(n?'('+n+') ':'')+document.title.replace(/^\(\d+\) /,''); }
+  function nfAdd(n){ const l=loadLS(NF_KEY,[]); l.unshift(n); l.length=Math.min(l.length,50); saveLS(NF_KEY,l); nfBadge(); nfRender();
+    const t=document.getElementById('wtbNToast'); if(!t) return;
+    t.innerHTML='<b>'+esc(n.who)+'</b> '+esc(n.text)+'<small>'+esc(n.sec)+'</small>'; t.dataset.act=n.act||''; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),5000); }
+  function nfFromLog(log){
+    log=Array.isArray(log)?log:Object.values(log||{}); const me=nfDid(); let last=loadLS(NF_T,0);
+    if(!last){ saveLS(NF_T,Date.now()); return; }
+    log.filter(e=>e&&e.t>last).sort((a,b)=>a.t-b.t).forEach(e=>{
+      last=Math.max(last,e.t); if(e.did ? e.did===me : e.device===deviceName()) return;
+      let kind=''; const m=/"([^"]+)"/.exec(e.action||'');
+      if(m && /memory/i.test(e.action)){ const r=loadLS('wtb_memories',[]).find(x=>x.title===m[1]); kind=r?(r.video?'video':r.photo?'photo':'note'):''; }
+      const s=nfSection((e.action||'')+' '+kind);
+      nfAdd({t:e.t,who:e.device||'someone',text:(e.action||'')+(kind?' ('+kind+')':''),sec:s[0],act:s[1]});
+    });
+    saveLS(NF_T,last);
+  }
+  function notifInitVoices(){
+    const t0=Date.now(), ref=fbdb.ref('world/voices_meta');
+    ref.on('value',s=>{ nfVoices=Object.values(s.val()||{}); nfRender(); if(typeof renderMemList==='function'&&window.__memTab==='voice') renderMemList(); });
+    ref.on('child_added',s=>{ const v=s.val(); if(v&&v.created>t0&&(v.did?v.did!==nfDid():v.by!==deviceName())) nfAdd({t:Date.now(),who:v.by||'someone',text:'sent a voice message "'+(v.title||'Untitled')+'"',sec:'Voice',act:v.side==='chua'?'voice-chua':'voice-sakura'}); });
+  }
+  function nfUsage(){ let b=0; SYNC_KEYS.forEach(k=>{ b+=(localStorage.getItem(k)||'').length; });
+    loadLS('wtb_memories',[]).forEach(m=>{ if(m.video&&m.video.cloud) b+=m.video.size||4e6; });
+    return b+nfVoices.reduce((s,v)=>s+(v.dur||0)*6000,0); }
+  const nfFmt=u=>u>=1e6?(u/1e6).toFixed(1)+' MB':Math.round(u/1e3)+' KB';
+  function nfRender(){
+    const sh=document.getElementById('wtbSheet'); if(!sh) return;
+    const u=nfUsage(), p=Math.min(100,u/1073741824*100), cls=p>=90?'bad':p>=70?'warn':'';
+    const msg=p>=90?'Nearly full — please avoid adding more videos.':p>=70?'Getting full — keep videos short.':'Plenty of room.';
+    const items=loadLS(NF_KEY,[]).map(n=>'<button class="nf-it" data-act="'+esc(n.act||'')+'"><span><b>'+esc(n.who)+'</b> '+esc(n.text)+'<small>'+esc(n.sec)+' · '+esc(nfTime(n.t))+'</small></span></button>').join('');
+    sh.innerHTML='<div class="nf-meter '+cls+'"><div class="nf-mh"><span>Cloud storage</span><span>≈ '+nfFmt(u)+' of 1 GB</span></div><div class="nf-bar"><i style="width:'+Math.max(p,1)+'%"></i></div><small>'+msg+' This is an estimate; exact numbers are in the Firebase console.</small></div><div class="nf-h">What’s new</div>'+(items||'<div class="nf-empty">Nothing new yet. When someone adds a photo, video, voice message, rating or note, it shows up here.</div>');
+  }
+  function nfGo(act){ const s=document.getElementById('wtbSheet'); if(s) s.classList.remove('open'); const h=act&&document.querySelector('[data-act="'+act+'"]'); if(h) h.click(); }
+  function nfVoiceHtml(){
+    if(!nfVoices.length) return '<div class="mem-note" style="text-align:center;">No voice messages yet. Record one from Sakura’s or Chua’s Voice.</div>';
+    return nfVoices.slice().sort((a,b)=>(b.created||0)-(a.created||0)).map(v=>'<div class="mem-card"><div class="mem-title">'+esc(v.title||'Untitled voice')+'</div><div class="mem-date">'+(v.side==='chua'?'Chua’s Voice':'Sakura’s Voice')+(v.dur?' · '+Math.round(v.dur)+'s':'')+'</div><div class="mem-stamp">added by '+esc(v.by||'someone')+' · '+esc(nfTime(v.created))+(v.edited?' · edited '+esc(nfTime(v.edited)):'')+'</div></div>').join('');
+  }
+  function nfInit(){
+    if(document.getElementById('wtbBell')) return;
+    const bell=document.createElement('button'); bell.id='wtbBell'; bell.setAttribute('aria-label','notifications and storage');
+    bell.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 17v-6a6 6 0 0112 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><b id="wtbBadge" hidden>0</b>';
+    (document.getElementById('ctrlDock')||document.body).appendChild(bell);
+    const sh=document.createElement('div'); sh.id='wtbSheet'; document.body.appendChild(sh);
+    const tt=document.createElement('div'); tt.id='wtbNToast'; document.body.appendChild(tt);
+    bell.addEventListener('click',e=>{ e.stopPropagation(); sh.classList.toggle('open'); if(sh.classList.contains('open')){ saveLS(NF_READ,Date.now()); nfBadge(); nfRender(); } });
+    sh.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('.nf-it'); if(b) nfGo(b.dataset.act); });
+    tt.addEventListener('click',()=>{ tt.classList.remove('show'); nfGo(tt.dataset.act); });
+    document.addEventListener('click',e=>{ if(!e.target.closest('#wtbSheet')) sh.classList.remove('open'); });
+    nfBadge(); nfRender();
+  }
+  document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#memTabs [data-memtab]'); if(b){ window.__memTab=b.dataset.memtab; if(typeof memStopVideos==='function') memStopVideos(); renderMemList(); } });
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',nfInit); else nfInit();
 
   // ---------- line-icon library (replaces all emoji glyphs) ----------
   const ICONS = {
@@ -2678,6 +2794,7 @@ function onYouTubeIframeAPIReady(){
         </div>
         <div class="mem-status" id="memStatus" role="status" aria-live="polite"></div>
       </div>
+      <div id="memTabs" class="nf-tabs"><button data-memtab="photo">Photos <i>0</i></button><button data-memtab="video">Videos <i>0</i></button><button data-memtab="voice">Voice <i>0</i></button><button data-memtab="note">Notes <i>0</i></button></div>
       <div id="memList"></div>`;
     renderMemList();
     const $ = id => document.getElementById(id);
@@ -2783,8 +2900,12 @@ function onYouTubeIframeAPIReady(){
     // don't yank a playing video out from under her when a sync update arrives
     if(memActive && memActive.v && !memActive.v.paused && !memActive.v.ended){ memRenderPending = true; return; }
     memRenderPending = false;
-    const memories = memSorted(loadLS('wtb_memories', []));
-    if(!memories.length){ list.innerHTML = `<div class="mem-note" style="text-align:center;">No memories planted yet. The first one is waiting.</div>`; return; }
+    const memAllRaw = memSorted(loadLS('wtb_memories', []));
+    const tab = window.__memTab || 'photo';
+    document.querySelectorAll('#memTabs [data-memtab]').forEach(b => { const k = b.dataset.memtab; b.classList.toggle('on', k === tab); b.querySelector('i').textContent = k === 'voice' ? nfVoices.length : memAllRaw.filter(MEMT[k]).length; });
+    if(tab === 'voice'){ list.innerHTML = nfVoiceHtml(); return; }
+    const memories = memAllRaw.filter(MEMT[tab]);
+    if(!memories.length){ list.innerHTML = `<div class="mem-note" style="text-align:center;">Nothing here yet. The first one is waiting.</div>`; return; }
     const vids = memories.filter(m => m.video).length;
     list.innerHTML = `<div class="mem-countrow"><div class="mem-count">${memories.length} ${memories.length === 1 ? 'memory' : 'memories'} planted${vids ? ' · ' + vids + (vids === 1 ? ' video' : ' videos') : ''}</div>${memories.length > 1 ? `<button type="button" class="mem-sort" id="memSort">${memOldestFirst() ? 'oldest first' : 'newest first'} ⇅</button>` : ''}</div>`;
     const sortBtn = list.querySelector('#memSort');
@@ -2813,7 +2934,7 @@ function onYouTubeIframeAPIReady(){
         <div class="mem-date">${esc(fmtDate(m.date))}</div>
         ${media}
         ${m.story ? `<div class="mem-story">${esc(m.story)}</div>` : ''}
-        ${m.created ? `<div class="mem-stamp">planted ${esc(fmtStamp(m.created))}${m.edited ? ' · edited ' + esc(fmtStamp(m.edited)) : ''}</div>` : ''}
+        ${m.created ? `<div class="mem-stamp">planted by <b>${esc(m.by || 'someone')}</b> · ${esc(fmtStamp(m.created))}${m.edited ? '<br>edited by <b>' + esc(m.editedBy || m.by || 'someone') + '</b> · ' + esc(fmtStamp(m.edited)) : ''}</div>` : ''}
         ${m.achv ? `<span class="mem-achv">In The Book of Us</span>` : ''}`;
       const del = card.querySelector('.mem-del');
       let armed = false, armT = 0;
@@ -2925,7 +3046,8 @@ function onYouTubeIframeAPIReady(){
         rec.photo = null; rec.video = null;
       }
       rec.title = title; rec.date = date; rec.story = story; rec.achv = achv;
-      if(!isNew) rec.edited = Date.now(); else all.push(rec);
+      if(!isNew){ rec.edited = Date.now(); rec.editedBy = deviceName(); } else { rec.by = deviceName(); all.push(rec); }
+      window.__memTab = rec.video ? 'video' : rec.photo ? 'photo' : 'note';
 
       let saved = true;
       try{ localStorage.setItem('wtb_memories', JSON.stringify(all)); }catch(e){ saved = false; }
@@ -2989,7 +3111,7 @@ function onYouTubeIframeAPIReady(){
         Promise.all(old.filter(v => v && v.audio).map(v => {
           const id = 'v' + (v.id || Date.now());
           return fbdb.ref('world/voices_audio/' + id).set(v.audio).then(() =>
-            fbdb.ref('world/voices_meta/' + id).set({ id, side:v.side, title:v.title || 'Untitled voice', dur:v.dur || 0, created:v.created || Date.now(), by:deviceName() }));
+            fbdb.ref('world/voices_meta/' + id).set({ id, side:v.side, title:v.title || 'Untitled voice', dur:v.dur || 0, created:v.created || Date.now(), by:deviceName(), did:nfDid() }));
         })).then(() => localStorage.removeItem('wtb_voices')).catch(() => {});
       }
     }catch(e){}
@@ -3160,7 +3282,7 @@ function onYouTubeIframeAPIReady(){
     if(data.length > 8000000){ vcNote("that recording is too large to save."); saveBtn.disabled = false; return; }
     const id = 'v' + Date.now();
     const by = deviceName();
-    const meta = { id, side: vcSide, title, dur: Math.round(st.dur), created: Date.now(), by: by === 'unnamed device' ? '' : by };
+    const meta = { id, side: vcSide, title, dur: Math.round(st.dur), created: Date.now(), by: by === 'unnamed device' ? '' : by, did: nfDid() };
     try{
       await fbdb.ref('world/voices_audio/' + id).set(data); // audio first, so nobody sees a title with no sound
       await fbdb.ref('world/voices_meta/' + id).set(meta);
@@ -3667,6 +3789,7 @@ function onYouTubeIframeAPIReady(){
       firebase.initializeApp(FIREBASE_CONFIG);
       fbdb = firebase.database();
       vcInitSync();
+      notifInitVoices();
       SYNC_KEYS.forEach(key => {
         fbdb.ref('world/' + key).on('value', snap => {
           let v = snap.val();
@@ -3690,6 +3813,7 @@ function onYouTubeIframeAPIReady(){
             if(key === 'wtb_const_done') constellationDone = (val === true);
           }catch(e){}
           applyingRemote = false;
+          if(key === 'wtb_log'){ try{ nfFromLog(val); }catch(e){} }
           syncRefreshOpenPanel();
         });
       });
@@ -6422,23 +6546,41 @@ function onYouTubeIframeAPIReady(){
   function reshuffle(act){ delete orderCache[act]; for(var k in cache){ if(k.indexOf(act + '-') === 0) delete cache[k]; } }
   var ONE = ['tree','river','garden','cottage','sky','heart','prayers'];
   // a fresh deal every time an island is opened from the hub (the cache is cleared when the panel closes)
-  document.addEventListener('click', function(e){
-    var h = e.target.closest && e.target.closest('.hotspot'); if(!h) return;
-    var a = h.getAttribute('data-act'); if(ONE.indexOf(a) > -1) reshuffle(a);
-  }, true);
+  function rload(){ try{ return JSON.parse(localStorage.getItem('wtb_round') || '{}') || {}; }catch(e){ return {}; } }
+  function rsave(o){ try{ localStorage.setItem('wtb_round', JSON.stringify(o)); }catch(e){} }
   window.__wtbAfterPanel = function(act){
     if(ONE.indexOf(act) < 0) return;
     save(last);
     var grid = document.getElementById('panelGrid'); if(!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.item-card')), N = cards.length, order = orderCache[act] || [];
+    cards.forEach(function(c, i){ c.style.setProperty('--d', i); c.setAttribute('data-i', order[i] != null ? order[i] : i); });
     var row = document.createElement('div'); row.className = 'lg-shuf';
-    row.innerHTML = '<span>Fresh words every visit</span><button type="button" aria-label="Shuffle this place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Shuffle</button>';
+    row.innerHTML = '<span></span><button type="button" aria-label="Shuffle this place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Shuffle</button>';
     grid.insertBefore(row, grid.firstChild);
-    Array.prototype.forEach.call(grid.querySelectorAll('.item-card'), function(c, i){ c.style.setProperty('--d', i); });
-    grid.classList.add('dealing'); setTimeout(function(){ grid.classList.remove('dealing'); }, 1200);
-    row.querySelector('button').addEventListener('click', function(){
+    var label = row.firstChild, busy = false;
+    function paint(){ label.textContent = (rload()[act] || []).length + ' of ' + N + ' opened · reshuffles when all are open'; }
+    paint();
+    grid.classList.add('dealing'); setTimeout(function(){ grid.classList.remove('dealing'); }, 900 + N * 45);
+    function go(){
+      if(busy) return; busy = true;
       grid.classList.remove('dealing'); grid.classList.add('shuffling');
-      setTimeout(function(){ grid.classList.remove('shuffling'); reshuffle(act); if(window.__wtbOpenPanel) window.__wtbOpenPanel(act); }, 300);
-    });
+      setTimeout(function(){
+        grid.classList.remove('shuffling');
+        var r = rload(); delete r[act]; rsave(r); reshuffle(act);
+        var ov = document.getElementById('overlay');
+        if(grid.isConnected && grid.querySelector('.lg-shuf') === row && ov && ov.classList.contains('open') && window.__wtbOpenPanel) window.__wtbOpenPanel(act);
+      }, 420 + N * 24);
+    }
+    row.querySelector('button').addEventListener('click', go);
+    if(grid._shufH) grid.removeEventListener('click', grid._shufH);
+    grid._shufH = function(e){
+      var c = e.target.closest && e.target.closest('.item-card'); if(!c || busy) return;
+      var r = rload(), a = r[act] || [], i = Number(c.getAttribute('data-i'));
+      if(a.indexOf(i) < 0){ a.push(i); r[act] = a; rsave(r); }
+      paint();
+      if(a.length >= N){ row.classList.add('auto'); label.textContent = 'All opened · reshuffling…'; setTimeout(go, 2200); }
+    };
+    grid.addEventListener('click', grid._shufH);
   };
 })();
 </script>
