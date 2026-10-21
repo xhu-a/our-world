@@ -1521,6 +1521,134 @@
 .item-grid.shuffling .item-card{ animation:lgOut2 .4s cubic-bezier(.5,0,.75,.4) both; animation-delay:calc(var(--d,0) * 24ms); }
 @keyframes lgDeal2{ from{ opacity:0; transform:translateY(20px) scale(.96); } to{ opacity:1; transform:none; } }
 @keyframes lgOut2{ to{ opacity:0; transform:translateY(-12px) scale(.95); } }
+/* v13.2: island names on long press (touch), no text selection / callout */
+.hotspot, .hotspot *, .hub-canopy{ -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent; }
+.hotspot{ touch-action:manipulation; }
+.hotspot img, .hotspot svg{ -webkit-user-drag:none; pointer-events:none; }
+@media (pointer:coarse){
+  .hotspot .lbl{ opacity:0; visibility:hidden; transform:translateY(-4px); pointer-events:none; transition:opacity .22s ease, transform .25s ease, visibility .22s; }
+  .hotspot.lp-show .lbl{ opacity:1; visibility:visible; transform:none; }
+  .hotspot.lp-show .icon{ transform:translateY(-3px) scale(1.06); }
+}
+.nf-roles{ display:flex; gap:8px; margin:0 0 8px; }
+.nf-roles button, .nf-test, .nf-topic button{ padding:8px 12px; border-radius:999px; border:1px solid rgba(226,190,235,.3); background:rgba(255,255,255,.05); color:inherit; font:inherit; font-size:14px; cursor:pointer; }
+.nf-roles button{ flex:1; } .nf-roles button.on{ background:rgba(246,160,200,.22); border-color:rgba(246,160,200,.7); }
+.nf-topic{ display:flex; align-items:center; gap:8px; margin:8px 0; }
+.nf-topic code{ flex:1; min-width:0; word-break:break-all; font-size:12.5px; padding:8px 10px; border-radius:10px; background:rgba(0,0,0,.35); user-select:text; -webkit-user-select:text; }
+.nf-test{ width:100%; }
+/* ===== v13.5: per-island identity + one calm interaction language ===== */
+.panel[data-theme="sakura"]{ --lg-tint:rgba(246,160,200,.17); --lg-accent:#f9b4d2; }
+.panel[data-theme="chua"]{ --lg-tint:rgba(84,96,210,.28); --lg-accent:#b3bbff; }
+.panel[data-theme="tree"]{ --lg-tint:rgba(232,190,120,.15); --lg-accent:#f0cf94; }
+.panel[data-theme="river"]{ --lg-tint:rgba(60,140,180,.24); --lg-accent:#9fd3e6; }
+.panel[data-theme="garden"]{ --lg-tint:rgba(246,160,190,.14); --lg-accent:#f6bcd0; }
+.panel[data-theme="cottage"]{ --lg-tint:rgba(230,160,90,.15); --lg-accent:#f2c58f; }
+.panel[data-theme="sky"]{ --lg-tint:rgba(84,72,196,.28); --lg-accent:#bdb4ff; }
+.panel[data-theme="book"]{ --lg-tint:rgba(232,207,154,.12); --lg-accent:#e8d6a8; }
+.panel[data-theme="heart"]{ --lg-tint:rgba(190,70,110,.22); --lg-accent:#f08fb0; }
+.panel[data-theme="prayers"]{ --lg-tint:rgba(190,200,150,.12); --lg-accent:#e9d9a2; }
+.panel[data-theme="movies"]{ --lg-tint:rgba(20,20,30,.55); --lg-accent:#e8cf9a; }
+@keyframes wtbPanelIn{ from{ opacity:0; transform:translateY(14px) scale(.985); } to{ opacity:1; transform:none; } }
+@keyframes wtbPanelOut{ from{ opacity:1; transform:none; } to{ opacity:0; transform:translateY(10px) scale(.99); } }
+#overlay.open .panel{ animation:wtbPanelIn .28s var(--lg-ease) both; }
+#overlay.open.closing .panel{ animation:wtbPanelOut .22s ease-in both; pointer-events:none; }
+.panel button:active, .item-card:active, .hotspot:active .icon, .mh-lib-card:active{ scale:.97; }
+.panel button, .panel .item-card{ min-height:44px; }
+.panel-close{ min-width:44px; min-height:44px; }
+@media (prefers-reduced-motion:reduce){
+  @keyframes wtbPanelIn{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes wtbPanelOut{ to{ opacity:0; } }
+  .panel button:active, .item-card:active, .hotspot:active .icon{ scale:1; }
+}
+/* ===== v13.6: voice islands redesign ===== */
+.panel[data-theme="sakura"] .vc-room{ --vc:#f7aacb !important; --vc2:#ffd9e8; }
+.panel[data-theme="chua"] .vc-room{ --vc:#a9b8ff !important; --vc2:#d8dcff; }
+.vc-room{ --vc2:#fff; }
+.vc-rec{ border-radius:24px; padding:20px 18px 26px; background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); border:1px solid rgba(255,255,255,.14); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 14px 34px rgba(0,0,0,.28); gap:14px; }
+.vc-rec input[type=text]{ border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:12px 14px; background:rgba(0,0,0,.18); font-size:16px; text-align:center; }
+.vc-rec input[type=text]:focus{ border-color:var(--vc); outline:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--vc) 22%, transparent); }
+.vc-viz{ height:72px; gap:3px; justify-content:center; padding:0 4px; }
+.vc-viz span, .vc-bars span{ width:3px; flex:0 0 3px; border-radius:3px; background:linear-gradient(180deg, var(--vc2), var(--vc)); opacity:.5; }
+.vc-viz span:nth-child(7n+1), .vc-bars span:nth-child(7n+1){ height:30%; } .vc-viz span:nth-child(7n+2), .vc-bars span:nth-child(7n+2){ height:52%; }
+.vc-viz span:nth-child(7n+3), .vc-bars span:nth-child(7n+3){ height:78%; } .vc-viz span:nth-child(7n+4), .vc-bars span:nth-child(7n+4){ height:44%; }
+.vc-viz span:nth-child(7n+5), .vc-bars span:nth-child(7n+5){ height:64%; } .vc-viz span:nth-child(7n+6), .vc-bars span:nth-child(7n+6){ height:36%; }
+.vc-viz span:nth-child(7n), .vc-bars span:nth-child(7n){ height:22%; }
+.vc-viz.live span{ opacity:1; }
+.vc-timer{ font-family:system-ui,-apple-system,'SF Pro Text',sans-serif; font-style:normal; font-variant-numeric:tabular-nums; font-size:15px; letter-spacing:.04em; color:var(--lg-text-2); }
+.vc-btns{ margin-bottom:12px; }
+.vc-mic{ position:relative; width:84px; height:84px; padding:0; font-size:0; color:transparent; border:1px solid color-mix(in srgb, var(--vc) 70%, white 10%); background:radial-gradient(circle at 35% 28%, color-mix(in srgb, var(--vc) 55%, #fff 20%), color-mix(in srgb, var(--vc) 35%, #12081f)); box-shadow:0 8px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.45); animation:vcBreathe 3.4s ease-in-out infinite; transition:background .25s ease, border-color .25s ease; }
+.vc-mic::before{ content:""; position:absolute; left:50%; top:50%; width:30px; height:30px; margin:-15px 0 0 -15px; border-radius:50%; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.25); transition:border-radius .25s ease, width .25s ease, height .25s ease, margin .25s ease, background .25s ease; }
+.vc-mic::after{ content:"tap to record"; position:absolute; left:50%; top:calc(100% + 10px); transform:translateX(-50%); white-space:nowrap; font:italic 13px 'Cormorant Garamond',serif; color:var(--lg-text-2); }
+.vc-mic.recording{ border-color:#ff8d9b; background:radial-gradient(circle at 35% 28%, #ff9fab, #b8394d); animation:vcRing 1.4s ease-out infinite; }
+.vc-mic.recording::before{ width:24px; height:24px; margin:-12px 0 0 -12px; border-radius:7px; }
+.vc-mic.recording::after{ content:"tap to stop"; color:#ffb3bd; }
+@keyframes vcBreathe{ 0%,100%{ box-shadow:0 8px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.45), 0 0 0 0 color-mix(in srgb, var(--vc) 40%, transparent); } 50%{ box-shadow:0 8px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.45), 0 0 0 12px transparent; } }
+@keyframes vcRing{ 0%{ box-shadow:0 8px 24px rgba(0,0,0,.4), 0 0 0 0 rgba(255,120,140,.55), 0 0 0 0 rgba(255,120,140,.3); } 100%{ box-shadow:0 8px 24px rgba(0,0,0,.4), 0 0 0 16px rgba(255,120,140,0), 0 0 0 30px rgba(255,120,140,0); } }
+.vc-card{ border-radius:20px; padding:14px; gap:14px; background:linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.025)); border:1px solid rgba(255,255,255,.12); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); transition:border-color .25s ease, background .25s ease; }
+.vc-card.playing{ animation:none; border-color:color-mix(in srgb, var(--vc) 75%, transparent); background:linear-gradient(180deg, color-mix(in srgb, var(--vc) 16%, transparent), rgba(255,255,255,.03)); box-shadow:0 10px 28px rgba(0,0,0,.3); }
+.vc-play{ flex:0 0 48px; width:48px; height:48px; border:0; color:#1a0f24; background:linear-gradient(160deg, var(--vc2), var(--vc)); box-shadow:0 4px 14px rgba(0,0,0,.3); }
+.vc-play:hover{ background:linear-gradient(160deg, var(--vc2), var(--vc)); }
+.vc-title{ font-size:17px; } .vc-meta{ font-size:12.5px; }
+.vc-bars{ height:30px; gap:3px; margin-top:8px; } .vc-bars span{ opacity:.4; }
+.vc-card.playing .vc-bars span{ opacity:1; }
+@media (prefers-reduced-motion:reduce){ .vc-mic, .vc-mic.recording{ animation:none; } }
+/* ===== v13.7: Movie Hall redesign ===== */
+.mh2-top{ position:sticky; top:0; z-index:6; padding:2px 0 12px; margin:0 -2px; background:linear-gradient(180deg, rgba(14,9,30,.97) 78%, rgba(14,9,30,0)); }
+.mh2-search{ display:flex; align-items:center; gap:10px; padding:0 14px; height:46px; border-radius:23px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); }
+.mh2-search svg{ width:18px; height:18px; flex:none; fill:none; stroke:var(--lg-text-2); stroke-width:2; stroke-linecap:round; }
+.mh2-search input{ flex:1; min-width:0; background:none; border:0; outline:0; color:var(--lg-text); font:inherit; font-size:16px; }
+.mh2-chips{ display:flex; gap:8px; overflow-x:auto; padding:12px 0 4px; scrollbar-width:none; }
+.mh2-chips::-webkit-scrollbar{ display:none; }
+.mh2-chip{ flex:none; display:flex; align-items:center; gap:7px; height:38px; padding:0 14px; border-radius:19px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:var(--lg-text-2); font:inherit; font-size:14px; cursor:pointer; transition:background .2s ease, border-color .2s ease, color .2s ease; }
+.mh2-chip i{ font-style:normal; font-size:12px; opacity:.6; }
+.mh2-chip.on{ background:var(--lg-accent); border-color:var(--lg-accent); color:#1a1208; } .mh2-chip.on i{ opacity:.7; }
+.mh2-sortrow{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:8px; font-size:13px; color:var(--lg-text-2); }
+.mh2-sort{ display:flex; gap:2px; padding:3px; border-radius:14px; background:rgba(255,255,255,.06); }
+.mh2-sort button{ height:30px; padding:0 11px; border:0; border-radius:11px; background:none; color:var(--lg-text-2); font:inherit; font-size:12.5px; cursor:pointer; transition:background .2s ease; }
+.mh2-sort button.on{ background:rgba(255,255,255,.16); color:var(--lg-text); }
+.mh2 .mh-lib-grid{ grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:16px 14px; padding-top:6px; }
+.mh2 .mh-lib-poster{ border-radius:14px; box-shadow:0 10px 24px rgba(0,0,0,.4); }
+.mh2 .mh-lib-name{ font-size:14px; margin-top:8px; } .mh2 .mh-lib-year{ font-size:11.5px; }
+.mh2-fab{ position:sticky; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:7; display:flex; align-items:center; gap:8px; height:50px; padding:0 22px; margin:18px 0 0 auto; border:0; border-radius:25px; background:var(--lg-accent); color:#1a1208; font:inherit; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.45); }
+.mh2-fab svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; }
+.mh-back{ position:sticky; top:0; z-index:6; min-height:44px; padding:0 4px; background:rgba(14,9,30,.9); }
+.mh-rate-box{ max-width:380px; border-radius:22px; padding:20px 18px; background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); border:1px solid rgba(255,255,255,.14); }
+.mh-rate-stars{ gap:8px; justify-content:center; }
+.mh-rate-stars .mh-star{ padding:4px; min-width:44px; min-height:44px; display:flex; align-items:center; justify-content:center; }
+.mh-rate-stars .mh-star svg{ width:34px; height:34px; }
+.mh-rate-stars .mh-star.on svg{ animation:mhPop .28s ease; filter:drop-shadow(0 0 8px rgba(232,207,154,.45)); }
+@keyframes mhPop{ 0%{ transform:scale(.7); } 60%{ transform:scale(1.18); } 100%{ transform:scale(1); } }
+.mh-rate-word{ text-align:center; min-height:20px; margin:2px 0 12px; font-style:italic; font-size:15px; color:var(--lg-accent); }
+.mh-avg-sum{ display:flex; align-items:baseline; gap:10px; justify-content:center; padding:4px 0 14px; } .mh-avg-sum b{ font-size:40px; font-weight:600; color:var(--lg-accent); } .mh-avg-sum span{ font-size:13px; color:var(--lg-text-2); }
+.mh-rating-row{ border:1px solid rgba(255,255,255,.1); border-radius:16px; background:rgba(255,255,255,.04); padding:12px 14px; margin-bottom:10px; }
+.mh-rating-name{ display:inline-flex; align-items:center; gap:9px; font-style:normal; font-size:15px; }
+.mh-rating-name::before{ content:attr(data-i); display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--lg-accent); color:#1a1208; font-size:13px; font-weight:600; }
+.mh-claim{ margin-left:4px; padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.25); background:none; color:var(--lg-text-2); font:inherit; font-size:11.5px; cursor:pointer; }
+/* ===== v13.8: Book of Us redesign + Movie Hall header polish ===== */
+.mh2-top{ margin:0 0 14px; padding:12px; border-radius:26px; background:rgba(22,14,44,.94); border:1px solid rgba(255,255,255,.1); box-shadow:0 12px 28px rgba(0,0,0,.35); }
+.mh2-chips{ padding:12px 0 2px; } .mh2-sortrow{ padding:10px 6px 2px 8px; }
+.mh2-sort{ border-radius:18px; padding:3px; } .mh2-sort button{ border-radius:15px; height:32px; padding:0 12px; }
+.bk2{ padding-left:0 !important; } .bk2::before, .bk2 .book-section::before{ display:none !important; }
+.bk-top{ position:sticky; top:0; z-index:6; margin:0 0 16px; padding:14px; border-radius:24px; background:rgba(22,14,44,.94); border:1px solid rgba(255,255,255,.1); box-shadow:0 12px 28px rgba(0,0,0,.35); }
+.bk-prog-t{ font-size:14px; color:var(--lg-text-2); margin-bottom:8px; } .bk-prog-t b{ font-size:20px; color:var(--lg-accent); font-weight:600; }
+.bk-bar{ height:6px; border-radius:3px; background:rgba(255,255,255,.12); overflow:hidden; } .bk-bar i{ display:block; height:100%; border-radius:3px; background:var(--lg-accent); }
+.bk-tabs{ display:flex; gap:8px; overflow-x:auto; padding-top:12px; scrollbar-width:none; } .bk-tabs::-webkit-scrollbar{ display:none; }
+.bk-tab{ flex:none; display:flex; align-items:center; gap:7px; height:38px; padding:0 15px; border-radius:19px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:var(--lg-text-2); font:inherit; font-size:14px; cursor:pointer; transition:background .2s ease, color .2s ease; }
+.bk-tab i{ font-style:normal; font-size:12px; opacity:.6; } .bk-tab.on{ background:var(--lg-accent); border-color:var(--lg-accent); color:#1a1208; }
+.bk-sec{ display:none; } .bk-sec.on{ display:block; animation:wtbPanelIn .24s var(--lg-ease) both; }
+.bk2 .book-section-title{ display:flex; align-items:center; justify-content:space-between; font-style:normal; text-transform:none; letter-spacing:0; font-size:18px; color:var(--lg-text); border:0; padding:0 2px; margin-bottom:12px; }
+.bk2 .add-achv-btn{ float:none; width:40px; height:40px; font-size:22px; border-radius:50%; background:rgba(255,255,255,.08); }
+.bk2 .achv-grid{ grid-template-columns:1fr; gap:10px; }
+.bk2 .achv-card{ border-radius:20px; padding:14px 16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)); border-color:rgba(255,255,255,.12); }
+.bk2 .achv-card:not(.locked):hover{ transform:none; }
+.bk2 .achv-head{ margin-bottom:6px; gap:12px; }
+.bk2 .achv-icon{ flex:none; width:38px; height:38px; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.08); }
+.bk2 .achv-name{ flex:1; min-width:0; font-style:normal; font-size:16px; }
+.bk2 .achv-badge{ font-size:10.5px; padding:2px 9px; border-radius:10px; }
+.bk2 .achv-desc{ font-size:13.5px; line-height:1.5; color:var(--lg-text-2); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding-left:50px; }
+.bk2 .achv-unlock{ padding-left:50px; font-size:12px; opacity:.7; margin-top:4px; }
+.bk2 .book-footer-note{ margin-top:22px; padding:0 8px; font-size:13px; line-height:1.6; opacity:.6; text-align:center; }
+.achv-detail-photo{ border-radius:20px; } .achv-back{ min-height:44px; }
 </style>
 </head>
 <body>
@@ -1815,6 +1943,7 @@
 </div>
 
 <div class="skip-note" id="skipNote">skip to the gate →</div>
+<div class="skip-note" id="valleySkip" role="button" tabindex="0">skip welcome →</div>
 <button class="music-toggle" id="musicToggle" title="toggle music" aria-label="toggle music">
   <svg class="mt-on" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
   <svg class="mt-off" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2.2"/></svg>
@@ -1966,7 +2095,7 @@ function onYouTubeIframeAPIReady(){
   function deviceName(){ return loadLS('wtb_device', '') || 'unnamed device'; }
   function logEvent(action){
     const log = loadLS('wtb_log', []);
-    log.push({ t: Date.now(), device: deviceName(), did: nfDid(), action });
+    log.push({ t: Date.now(), device: deviceName(), did: nfDid(), action }); try{ nfPush(action, nfSection(action)[0]); }catch(e){}
     while(log.length > 100) log.shift();
     saveLS('wtb_log', log);
   }
@@ -2002,6 +2131,7 @@ function onYouTubeIframeAPIReady(){
     saveLS(NF_T,last);
   }
   function notifInitVoices(){
+    nfInitPhone();
     const t0=Date.now(), ref=fbdb.ref('world/voices_meta');
     ref.on('value',s=>{ nfVoices=Object.values(s.val()||{}); nfRender(); if(typeof renderMemList==='function'&&window.__memTab==='voice') renderMemList(); });
     ref.on('child_added',s=>{ const v=s.val(); if(v&&v.created>t0&&(v.did?v.did!==nfDid():v.by!==deviceName())) nfAdd({t:Date.now(),who:v.by||'someone',text:'sent a voice message "'+(v.title||'Untitled')+'"',sec:'Voice',act:v.side==='chua'?'voice-chua':'voice-sakura'}); });
@@ -2015,13 +2145,59 @@ function onYouTubeIframeAPIReady(){
     const u=nfUsage(), p=Math.min(100,u/1073741824*100), cls=p>=90?'bad':p>=70?'warn':'';
     const msg=p>=90?'Nearly full — please avoid adding more videos.':p>=70?'Getting full — keep videos short.':'Plenty of room.';
     const items=loadLS(NF_KEY,[]).map(n=>'<button class="nf-it" data-act="'+esc(n.act||'')+'"><span><b>'+esc(n.who)+'</b> '+esc(n.text)+'<small>'+esc(n.sec)+' · '+esc(nfTime(n.t))+'</small></span></button>').join('');
-    sh.innerHTML='<div class="nf-meter '+cls+'"><div class="nf-mh"><span>Cloud storage</span><span>≈ '+nfFmt(u)+' of 1 GB</span></div><div class="nf-bar"><i style="width:'+Math.max(p,1)+'%"></i></div><small>'+msg+' This is an estimate; exact numbers are in the Firebase console.</small></div><div class="nf-h">What’s new</div>'+(items||'<div class="nf-empty">Nothing new yet. When someone adds a photo, video, voice message, rating or note, it shows up here.</div>');
+    sh.innerHTML='<div class="nf-meter '+cls+'"><div class="nf-mh"><span>Cloud storage</span><span>≈ '+nfFmt(u)+' of 1 GB</span></div><div class="nf-bar"><i style="width:'+Math.max(p,1)+'%"></i></div><small>'+msg+' This is an estimate; exact numbers are in the Firebase console.</small></div>'+nfPhoneHtml()+'<div class="nf-h">What’s new</div>'+(items||'<div class="nf-empty">Nothing new yet. When someone adds a photo, video, voice message, rating or note, it shows up here.</div>');
   }
   function nfGo(act){ const s=document.getElementById('wtbSheet'); if(s) s.classList.remove('open'); const h=act&&document.querySelector('[data-act="'+act+'"]'); if(h) h.click(); }
   function nfVoiceHtml(){
     if(!nfVoices.length) return '<div class="mem-note" style="text-align:center;">No voice messages yet. Record one from Sakura’s or Chua’s Voice.</div>';
     return nfVoices.slice().sort((a,b)=>(b.created||0)-(a.created||0)).map(v=>'<div class="mem-card"><div class="mem-title">'+esc(v.title||'Untitled voice')+'</div><div class="mem-date">'+(v.side==='chua'?'Chua’s Voice':'Sakura’s Voice')+(v.dur?' · '+Math.round(v.dur)+'s':'')+'</div><div class="mem-stamp">added by '+esc(v.by||'someone')+' · '+esc(nfTime(v.created))+(v.edited?' · edited '+esc(nfTime(v.edited)):'')+'</div></div>').join('');
   }
+
+  // ---------- v13.4: phone alerts via ntfy (works when the site is closed) ----------
+  const nfRole=()=>localStorage.getItem('wtb_ntfy_role')||'', nfBase=()=>localStorage.getItem('wtb_ntfy_base')||'';
+  const nfTopic=r=>nfBase()?'wtb-'+nfBase()+'-'+r:'', nfOther=r=>r==='sakura'?'chua':'sakura';
+  let nfLastPush='', nfLastT=0;
+  function nfPush(text, sec){
+    const r=nfRole(), t=(nfBase()&&r)?nfTopic(nfOther(r)):''; if(!t||sec==='The World') return;
+    if(text===nfLastPush && Date.now()-nfLastT<4000) return; nfLastPush=text; nfLastT=Date.now();
+    const body={topic:t,title:(r==='sakura'?'Sakura':'Chua')+' · '+sec,message:text,tags:['cherry_blossom']};
+    try{ if(/^https?:/.test(location.href)) body.click=location.href.split('#')[0]; }catch(e){}
+    fetch('https://ntfy.sh',{method:'POST',body:JSON.stringify(body)}).catch(()=>{});
+  }
+  function nfInitPhone(){
+    const ref=fbdb.ref('world/ntfy_base');
+    ref.once('value').then(s=>{ const v=s.val(); if(v){ localStorage.setItem('wtb_ntfy_base',v); nfRender(); return; }
+      const nb=Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10);
+      return ref.transaction(c=>c||nb).then(r=>{ localStorage.setItem('wtb_ntfy_base',r.snapshot.val()); nfRender(); }); }).catch(()=>{});
+  }
+  function nfPhoneHtml(){
+    const r=nfRole(), b=nfBase();
+    let h='<div class="nf-meter"><div class="nf-mh"><span>Phone alerts</span><span>'+(r&&b?'on':'off')+'</span></div><div class="nf-roles"><button data-role="sakura" class="'+(r==='sakura'?'on':'')+'">I’m Sakura</button><button data-role="chua" class="'+(r==='chua'?'on':'')+'">I’m Chua</button></div>';
+    if(r&&b) h+='<small>Install the free <b>ntfy</b> app, tap +, and subscribe to this topic:</small><div class="nf-topic"><code>'+nfTopic(r)+'</code><button data-copy="1">Copy</button></div><button class="nf-test" data-test="1">Send a test to the other phone</button>';
+    else h+='<small>'+(b?'Pick who is using this phone.':'Connecting…')+'</small>';
+    return h+'</div>';
+  }
+
+  // ---------- v13.7: keep ratings / memories / plans / voices attached to the CURRENT profile name ----------
+  function nfMigrateName(oldN,newN,force){
+    if(!oldN||!newN||oldN===newN||newN==='unnamed device') return;
+    const did=nfDid(), ok=safeKey(oldN), nk=safeKey(newN), legacyUnnamed=(oldN==='unnamed device'&&!force);
+    const mv=loadLS('wtb_movies',[]); let ch=false;
+    mv.forEach(m=>{ const r=m.ratings; if(!r) return; const e=r[ok];
+      if(e && (!legacyUnnamed || e.did===did)){ if(!r[nk]||(r[nk].t||0)<(e.t||0)) r[nk]=Object.assign({},e,{name:newN,did:did}); delete r[ok]; ch=true; }
+      Object.keys(r).forEach(k=>{ if(r[k]&&r[k].did===did&&k!==nk){ delete r[k]; ch=true; } }); });
+    if(ch) saveLS('wtb_movies',mv);
+    ['wtb_memories','wtb_plans'].forEach(key=>{ const a=loadLS(key,[]); if(!Array.isArray(a)) return; let c=false;
+      a.forEach(x=>{ if(x&&x.by===oldN){ x.by=newN; c=true; } if(x&&x.editedBy===oldN){ x.editedBy=newN; c=true; } }); if(c) saveLS(key,a); });
+    try{ const vr=fbdb.ref('world/voices_meta'); vr.once('value').then(sn=>{ const o=sn.val()||{}, up={};
+      Object.keys(o).forEach(k=>{ const v=o[k]; if(v&&v.by===oldN&&(!v.did||v.did===did||force)) up[k+'/by']=newN; });
+      if(Object.keys(up).length) vr.update(up); }).catch(()=>{}); }catch(e){}
+  }
+  function nfNameSweep(){ const cur=deviceName(), prev=loadLS('wtb_name_prev','');
+    if(prev && cur!==prev) nfMigrateName(prev,cur);
+    else if(!prev && cur!=='unnamed device') nfMigrateName('unnamed device',cur);
+    saveLS('wtb_name_prev',cur==='unnamed device'?'':cur); }
+  window.__wtbNameSweep=nfNameSweep;
   function nfInit(){
     if(document.getElementById('wtbBell')) return;
     const bell=document.createElement('button'); bell.id='wtbBell'; bell.setAttribute('aria-label','notifications and storage');
@@ -2030,10 +2206,14 @@ function onYouTubeIframeAPIReady(){
     const sh=document.createElement('div'); sh.id='wtbSheet'; document.body.appendChild(sh);
     const tt=document.createElement('div'); tt.id='wtbNToast'; document.body.appendChild(tt);
     bell.addEventListener('click',e=>{ e.stopPropagation(); sh.classList.toggle('open'); if(sh.classList.contains('open')){ saveLS(NF_READ,Date.now()); nfBadge(); nfRender(); } });
-    sh.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest('.nf-it'); if(b) nfGo(b.dataset.act); });
+    sh.addEventListener('click',e=>{ e.stopPropagation(); const t=e.target;
+      const rb=t.closest('[data-role]'); if(rb){ localStorage.setItem('wtb_ntfy_role',rb.dataset.role); nfRender(); return; }
+      if(t.closest('[data-copy]')){ try{ navigator.clipboard.writeText(nfTopic(nfRole())); }catch(_){} t.textContent='Copied'; return; }
+      if(t.closest('[data-test]')){ nfPush('Test: phone alerts are working','Test'); t.textContent='Sent'; return; }
+      const b=t.closest('.nf-it'); if(b) nfGo(b.dataset.act); });
     tt.addEventListener('click',()=>{ tt.classList.remove('show'); nfGo(tt.dataset.act); });
     document.addEventListener('click',e=>{ if(!e.target.closest('#wtbSheet')) sh.classList.remove('open'); });
-    nfBadge(); nfRender();
+    nfBadge(); nfRender(); try{ nfNameSweep(); }catch(e){}
   }
   document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#memTabs [data-memtab]'); if(b){ window.__memTab=b.dataset.memtab; if(typeof memStopVideos==='function') memStopVideos(); renderMemList(); } });
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',nfInit); else nfInit();
@@ -2084,6 +2264,7 @@ function onYouTubeIframeAPIReady(){
   function showScene(name){
     Object.values(scenes).forEach(s => s.classList.remove('active'));
     scenes[name].classList.add('active');
+    if(name === 'hub'){ const vs = document.getElementById('valleySkip'); if(vs) vs.classList.remove('show'); }
     if(name === 'hub' && !hubEnteredFired){
       hubEnteredFired = true;
       document.dispatchEvent(new CustomEvent('hub-entered'));
@@ -2098,15 +2279,16 @@ function onYouTubeIframeAPIReady(){
     const holds = opts.holds || [];
     const keepLast = !!opts.keepLast; // if true, final element stays visible (no fade-out)
     const onDone = opts.onDone;
-    let i = 0;
+    let i = 0; const gen = window.__seqGen | 0;
     function step(){
+      if(gen !== (window.__seqGen | 0)) return; // skipped
       if(i >= elements.length){ if(onDone) onDone(); return; }
       const el = elements[i];
       const isLast = i === elements.length - 1;
       const h = holds[i] !== undefined ? holds[i] : hold;
       el.classList.add('visible');
       if(isLast && keepLast){
-        if(onDone) setTimeout(onDone, h);
+        if(onDone) setTimeout(() => { if(gen === (window.__seqGen | 0)) onDone(); }, h);
         return;
       }
       setTimeout(() => {
@@ -2196,8 +2378,20 @@ function onYouTubeIframeAPIReady(){
     handleAttempt();
   });
 
+  let valleySkipped = false;
+  const valleySkipBtn = document.getElementById('valleySkip');
+  function skipValley(){
+    if(valleySkipped) return; valleySkipped = true;
+    window.__seqGen = (window.__seqGen | 0) + 1;   // cancels the welcome lines and the flower sequence
+    document.querySelectorAll('#scene-valley .seqline, #scene-valley .valley-flower-msg, #valleyFlowerWrap').forEach(el => el.classList.remove('visible', 'show'));
+    showScene('hub');
+  }
+  valleySkipBtn.addEventListener('click', skipValley);
+  valleySkipBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') skipValley(); });
+
   function openGate(name){
     introActive = false;
+    valleySkipBtn.classList.add('show');
     skipNote.classList.remove('show');
     nameInput.disabled = true;
     gateForm.querySelector('.continue-btn').disabled = true;
@@ -2217,6 +2411,7 @@ function onYouTubeIframeAPIReady(){
     setTimeout(() => arch.classList.add('opening'), 2200);
 
     setTimeout(() => {
+      if(valleySkipped){ showScene('hub'); return; }
       valleyGreeting.textContent = returningVisitor ? `Welcome back, ${name}.` : `Welcome, ${name}.`;
       showScene('valley');
       const valleyLines = [document.getElementById('valleyGreeting'), document.querySelector('#scene-valley .vc2'), document.querySelector('#scene-valley .vc3')];
@@ -2427,14 +2622,26 @@ function onYouTubeIframeAPIReady(){
       date:m.date, story:m.story, photo:m.photo || (m.video && m.video.poster) || null, planted:true, memId:m.id
     }));
     const plantedSection = planted.length ? `<div class="book-section"><div class="book-section-title">Planted By Us</div>${renderAchvGrid(planted, 'unlocked', 'Ours', 'planted')}</div>` : '';
-    panelGrid.innerHTML = `
-      <div class="book-section"><div class="book-section-title">The Beginning — Unlocked <button class="add-achv-btn" data-status="unlocked" title="add an achievement">+</button></div>${renderAchvGrid(secUnlocked, 'unlocked', 'Unlocked', 'unlocked')}</div>
-      <div class="book-section"><div class="book-section-title">Still Growing — Ongoing <button class="add-achv-btn" data-status="ongoing" title="add an achievement">+</button></div>${renderAchvGrid(secOngoing, 'ongoing', 'Ongoing', 'ongoing')}</div>
-      ${plantedSection}
-      <div class="book-section branch-locked"><div class="book-section-title">Future Chapters — Waiting To Bloom <button class="add-achv-btn" data-status="locked" title="add an achievement">+</button></div>${renderAchvGrid(secLocked, 'locked', 'Locked', 'locked')}</div>
-      <div class="book-section branch-locked"><div class="book-section-title">The Forever Garden — Secret</div>${renderAchvGrid(BOOK.secret, 'secret', 'Secret', 'secret')}</div>
-      <div class="book-footer-note">There is one more achievement. It isn't on a page here — it's the whole world. It's called The Heart Of The World, and you're already unlocking it just by being here.</div>
-    `;
+    const G = (k, lab, list) => renderAchvGrid(list, k, lab, k);
+    const sections = [
+      ['unlocked', 'Done', secUnlocked.length, `<div class="book-section-title">The Beginning <button class="add-achv-btn" data-status="unlocked" title="add an achievement">+</button></div>` + G('unlocked', 'Unlocked', secUnlocked)],
+      ['ongoing', 'Growing', secOngoing.length, `<div class="book-section-title">Still growing <button class="add-achv-btn" data-status="ongoing" title="add an achievement">+</button></div>` + G('ongoing', 'Ongoing', secOngoing)]
+    ];
+    if(planted.length) sections.push(['planted', 'Ours', planted.length, `<div class="book-section-title">Planted by us</div>` + G('planted', 'Ours', planted)]);
+    sections.push(['locked', 'Future', secLocked.length, `<div class="book-section-title">Waiting to bloom <button class="add-achv-btn" data-status="locked" title="add an achievement">+</button></div>` + G('locked', 'Locked', secLocked)]);
+    sections.push(['secret', 'Secret', BOOK.secret.length, `<div class="book-section-title">The Forever Garden</div>` + G('secret', 'Secret', BOOK.secret)]);
+    if(!sections.some(x => x[0] === window.__bkTab)) window.__bkTab = 'unlocked';
+    const total = secUnlocked.length + secOngoing.length + planted.length + secLocked.length, done = secUnlocked.length + planted.length;
+    panelGrid.className = 'book-tree bk2';
+    panelGrid.innerHTML = `<div class="bk-top"><div class="bk-prog"><div class="bk-prog-t"><b>${done}</b> of ${total} chapters written</div><div class="bk-bar"><i style="width:${total ? Math.round(done / total * 100) : 0}%"></i></div></div><div class="bk-tabs">` +
+      sections.map(x => `<button class="bk-tab ${window.__bkTab === x[0] ? 'on' : ''}" data-k="${x[0]}">${x[1]}<i>${x[2]}</i></button>`).join('') + `</div></div>` +
+      sections.map(x => `<div class="bk-sec ${window.__bkTab === x[0] ? 'on' : ''}" data-k="${x[0]}">${x[3]}</div>`).join('') +
+      `<div class="book-footer-note">There is one more achievement. It isn't on a page here — it's the whole world. It's called The Heart Of The World, and you're already unlocking it just by being here.</div>`;
+    panelGrid.querySelectorAll('.bk-tab').forEach(b => b.addEventListener('click', () => {
+      window.__bkTab = b.dataset.k;
+      panelGrid.querySelectorAll('.bk-tab').forEach(t => t.classList.toggle('on', t === b));
+      panelGrid.querySelectorAll('.bk-sec').forEach(sc => sc.classList.toggle('on', sc.dataset.k === b.dataset.k));
+    }));
     panelGrid.querySelectorAll('.achv-card').forEach(card => {
       card.addEventListener('click', () => openAchvDetail(card.dataset.sec, parseInt(card.dataset.idx, 10)));
     });
@@ -3083,7 +3290,7 @@ function onYouTubeIframeAPIReady(){
   };
   const VC_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
   const VC_STOP = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
-  const VC_BARS = Array.from({length:14}).map(() => '<span></span>').join('');
+  const VC_BARS = Array.from({length:32}).map(() => '<span></span>').join('');
   let vcSide = 'sakura', vcAudio = null, vcId = null, vcCtx = null;
   let vcAn = null, vcData = null, vcRaf = 0, vcMusicPaused = false, vcRec = null;
   let vcMeta = {};
@@ -3138,8 +3345,9 @@ function onYouTubeIframeAPIReady(){
     vcRaf = requestAnimationFrame(vcLoop);
     if(!vcAn || !vcData) return;
     vcAn.getByteFrequencyData(vcData);
-    document.querySelectorAll('#vcViz.live:not(.fake) span').forEach((s, i) => {
-      const v = vcData[Math.min((i % 14) + 1, vcData.length - 1)] / 255;
+    const vs = document.querySelectorAll('#vcViz.live:not(.fake) span'), half = Math.max(1, (vs.length - 1) / 2);
+    vs.forEach((s, i) => {
+      const v = vcData[Math.min(1 + Math.floor(Math.abs(i - half) / half * 13), vcData.length - 1)] / 255;
       s.style.height = (14 + Math.min(1, v * 1.4) * 86) + '%';
     });
   }
@@ -3283,6 +3491,7 @@ function onYouTubeIframeAPIReady(){
     const id = 'v' + Date.now();
     const by = deviceName();
     const meta = { id, side: vcSide, title, dur: Math.round(st.dur), created: Date.now(), by: by === 'unnamed device' ? '' : by, did: nfDid() };
+    try{ nfPush('sent a voice message "' + title + '"', 'Voice'); }catch(e){}
     try{
       await fbdb.ref('world/voices_audio/' + id).set(data); // audio first, so nobody sees a title with no sound
       await fbdb.ref('world/voices_meta/' + id).set(meta);
@@ -3479,42 +3688,38 @@ function onYouTubeIframeAPIReady(){
     if(entries.length) return entries.reduce((s,r) => s + (r.stars||0), 0) / entries.length;
     return m.rating || 0; // legacy fallback for movies rated before this update
   }
+  var mhQ = '', mhSort = 'new';
+  const MHL = { all:'All', planning:'Planning', ongoing:'Watching', finished:'Finished' };
+  const MHW = ['Tap a star to rate','Not for me','It was okay','Liked it','Loved it','A masterpiece'];
   function mhRenderLibrary(){
     panelSub.textContent = "Every world we've walked through together — and the ones still waiting.";
-    const list = mhList();
-    const sectionTabs = `<div class="mh-section-tabs">
-      <button class="mh-section-tab current">The Library</button>
-      <button class="mh-section-tab" id="mhGoAdd">+ Add a Story</button>
-    </div>`;
-    const filterRow = `<div class="mh-filter-row">` +
-      [['all','all'],...MH_STATUSES].map(([k,l]) => `<button class="mh-tab ${mhFilter===k?'current':''}" data-f="${k}">${l}</button>`).join('') + `</div>`;
-    let grid;
-    if(list.length === 0){
-      grid = `<div class="mh-empty">The hall is empty${mhFilter !== 'all' ? ' here' : ''}. Add the first story to begin.</div>
-        <div class="mh-lib-grid" style="max-width:160px;margin:0 auto;">${mhAddFabHtml(0)}</div>`;
-    } else {
-      grid = `<div class="mh-lib-grid">` + list.map((m, i) => {
+    const everything = loadLS('wtb_movies', []);
+    const cnt = k => k === 'all' ? everything.length : everything.filter(m => m.status === k).length;
+    const chips = ['all','planning','ongoing','finished'].map(k => `<button class="mh2-chip ${mhFilter===k?'on':''}" data-f="${k}">${MHL[k]}<i>${cnt(k)}</i></button>`).join('');
+    panelGrid.className = 'mh-room mh2';
+    panelGrid.innerHTML = `<div class="mh2-top"><label class="mh2-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="mhQ" type="search" placeholder="Search the hall" value="${esc(mhQ)}" autocomplete="off"></label><div class="mh2-chips">${chips}</div><div class="mh2-sortrow"><span id="mhCount"></span><div class="mh2-sort">${[['new','Newest'],['top','Top rated'],['az','A–Z']].map(([k,l]) => `<button data-s="${k}" class="${mhSort===k?'on':''}">${l}</button>`).join('')}</div></div></div><div id="mhGrid"></div><button class="mh2-fab" id="mhAddFab2"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add a story</button>`;
+    function paint(){
+      let list = mhList().slice(); const q = mhQ.trim().toLowerCase();
+      if(q) list = list.filter(m => (m.title || '').toLowerCase().includes(q));
+      if(mhSort === 'top') list.sort((a, b) => mhAvgRating(b) - mhAvgRating(a));
+      else if(mhSort === 'az') list.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+      else list.sort((a, b) => (b.added || 0) - (a.added || 0));
+      document.getElementById('mhCount').textContent = list.length + (list.length === 1 ? ' story' : ' stories');
+      const g = document.getElementById('mhGrid');
+      g.innerHTML = list.length ? `<div class="mh-lib-grid">` + list.map((m, i) => {
         const bg = m.poster ? ` style="background-image:url('${safeUrl(m.poster)}')"` : '';
-        const ph = m.poster ? '' : `<div class="mh-ph">${esc(m.title.charAt(0).toUpperCase())}</div>`;
+        const ph = m.poster ? '' : `<div class="mh-ph">${esc((m.title || '?').charAt(0).toUpperCase())}</div>`;
         const avg = mhAvgRating(m);
         const badge = avg > 0 ? `<div class="mh-avg-badge">${ICONS.star}<span>${avg.toFixed(1)}</span></div>` : '';
-        return `<div class="mh-lib-card" data-id="${m.id}" style="animation-delay:${Math.min(i,14)*45}ms">
-          <div class="mh-lib-poster"${bg}>${ph}<span class="mh-lib-badge ${m.status}"></span>${badge}</div>
-          <div class="mh-lib-name">${esc(m.title)}</div>
-          <div class="mh-lib-year">${esc(m.year || '')}</div>
-        </div>`;
-      }).join('') + mhAddFabHtml(list.length) + `</div>`;
+        return `<div class="mh-lib-card" data-id="${m.id}" style="animation-delay:${Math.min(i,12)*35}ms"><div class="mh-lib-poster"${bg}>${ph}<span class="mh-lib-badge ${m.status}"></span>${badge}</div><div class="mh-lib-name">${esc(m.title)}</div><div class="mh-lib-year">${esc(m.year || '')}${m.year ? ' · ' : ''}${MHL[m.status] || ''}</div></div>`;
+      }).join('') + `</div>` : `<div class="mh-empty">${q ? 'Nothing matches that search.' : 'The hall is empty here. Add the first story to begin.'}</div>`;
+      g.querySelectorAll('.mh-lib-card').forEach(c => c.addEventListener('click', () => { mhDetailId = c.dataset.id; mhView = 'detail'; mhRender(); }));
     }
-    panelGrid.className = "mh-room";
-    panelGrid.innerHTML = sectionTabs + filterRow + grid;
-
-    document.getElementById('mhGoAdd').addEventListener('click', () => { mhView = 'add'; mhRender(); });
-    panelGrid.querySelectorAll('.mh-tab').forEach(t => t.addEventListener('click', () => { mhFilter = t.dataset.f; mhRender(); }));
-    panelGrid.querySelectorAll('.mh-lib-card').forEach(c => c.addEventListener('click', () => {
-      mhDetailId = c.dataset.id; mhView = 'detail'; mhRender();
-    }));
-    const fab = document.getElementById('mhAddFab');
-    if(fab) fab.addEventListener('click', () => { mhView = 'add'; mhRender(); });
+    paint();
+    panelGrid.querySelectorAll('.mh2-chip').forEach(b => b.addEventListener('click', () => { mhFilter = b.dataset.f; mhRender(); }));
+    panelGrid.querySelectorAll('.mh2-sort button').forEach(b => b.addEventListener('click', () => { mhSort = b.dataset.s; mhRender(); }));
+    document.getElementById('mhQ').addEventListener('input', e => { mhQ = e.target.value; paint(); });
+    document.getElementById('mhAddFab2').addEventListener('click', () => { mhView = 'add'; mhRender(); });
   }
   function mhAddFabHtml(delayIdx){
     return `<div class="mh-add-fab" id="mhAddFab" style="animation-delay:${Math.min(delayIdx,14)*45}ms">
@@ -3532,8 +3737,9 @@ function onYouTubeIframeAPIReady(){
     const ph = cur.poster ? '' : `<div class="mh-ph">${esc(cur.title.charAt(0).toUpperCase())}</div>`;
     const myName = deviceName();
     const isNamed = myName !== 'unnamed device';
-    const mine = cur.ratings[safeKey(myName)] || { stars: 0, comment: '' };
-    const othersRatings = Object.entries(cur.ratings).filter(([n]) => n !== safeKey(myName));
+    const mine = cur.ratings[safeKey(myName)] || Object.values(cur.ratings).find(r => r && r.did === nfDid()) || { stars: 0, comment: '' };
+    const othersRatings = Object.entries(cur.ratings).filter(([n, r]) => n !== safeKey(myName) && !(r && r.did === nfDid()));
+    const rated = Object.values(cur.ratings).filter(r => r && r.stars > 0), avgR = rated.length ? rated.reduce((t, r) => t + r.stars, 0) / rated.length : 0;
     const allRatingsForList = isNamed ? [[myName, mine], ...othersRatings] : Object.entries(cur.ratings);
 
     panelGrid.className = "mh-room";
@@ -3552,7 +3758,7 @@ function onYouTubeIframeAPIReady(){
         <div class="mh-rate-box">
           <div class="mh-rate-lbl">${isNamed ? esc(myName) + "'s rating" : 'your rating'}</div>
           <div class="mh-rate-stars" id="mhMyStars">` + [1,2,3,4,5].map(n =>
-            `<button class="mh-star ${mine.stars >= n ? 'on' : ''}" data-star="${n}">${ICONS.star}</button>`).join('') + `</div>
+            `<button class="mh-star ${mine.stars >= n ? 'on' : ''}" data-star="${n}">${ICONS.star}</button>`).join('') + `</div><div class="mh-rate-word" id="mhWord">${MHW[mine.stars || 0]}</div>
           <textarea class="mh-rate-comment" id="mhMyComment" placeholder="what did you think? (optional)">${esc(mine.comment)}</textarea>
           <button class="mh-rate-save" id="mhRateSave">save my rating</button>
           ${(mine.stars || mine.comment) ? '<button class="mh-rate-save" id="mhRateDel">delete my rating</button>' : ''}
@@ -3560,11 +3766,12 @@ function onYouTubeIframeAPIReady(){
         </div>
 
         ${allRatingsForList.length ? `<div class="mh-ratings-list">
+          ${rated.length ? `<div class="mh-avg-sum"><b>${avgR.toFixed(1)}</b><span>out of 5 · ${rated.length} rating${rated.length > 1 ? 's' : ''}</span></div>` : ''}
           <div class="mh-ratings-title">ratings</div>
           ${allRatingsForList.filter(([,r]) => r.stars > 0 || r.comment).map(([name, r]) => `
             <div class="mh-rating-row">
               <div class="mh-rating-head">
-                <span class="mh-rating-name">${esc(r.name || name)}</span>
+                <span class="mh-rating-name" data-i="${esc((r.name || name).charAt(0).toUpperCase())}">${esc(r.name || name)}${(isNamed && !r.did) ? ' <button class="mh-claim" data-old="' + esc(r.name || name) + '">that’s me</button>' : ''}</span>
                 <span class="mh-rating-stars-mini">${Array.from({length:5}).map((_,i) => `<svg viewBox="0 0 24 24" style="${i < r.stars ? '' : 'fill:none;stroke-width:1.2;'}"><path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z"/></svg>`).join('')}</span>
               </div>
               ${r.comment ? `<div class="mh-rating-comment">${esc(r.comment)}</div>` : ''}
@@ -3581,6 +3788,7 @@ function onYouTubeIframeAPIReady(){
         </div>
       </div>`;
     document.getElementById('mhBack').addEventListener('click', () => { mhView = 'library'; mhRender(); });
+    panelGrid.querySelectorAll('.mh-claim').forEach(b => b.addEventListener('click', () => { if(confirm('Is "' + b.dataset.old + '" really you? Your old name will become ' + myName + '.')){ nfMigrateName(b.dataset.old, myName, true); mhRender(); } }));
     panelGrid.querySelectorAll('[data-ms]').forEach(c => c.addEventListener('click', () => { logEvent('set "' + cur.title + '" to ' + c.dataset.ms); mhUpdate(cur.id, m => m.status = c.dataset.ms); }));
 
     let myStars = mine.stars;
@@ -3588,6 +3796,7 @@ function onYouTubeIframeAPIReady(){
       const n = parseInt(s.dataset.star, 10);
       myStars = (myStars === n ? 0 : n);
       panelGrid.querySelectorAll('#mhMyStars .mh-star').forEach((st,i) => st.classList.toggle('on', i < myStars));
+      document.getElementById('mhWord').textContent = MHW[myStars];
     }));
     const rd = document.getElementById('mhRateDel');
     if(rd) rd.addEventListener('click', () => { logEvent('deleted a rating for "' + cur.title + '"'); mhUpdate(cur.id, m => { if(m.ratings) delete m.ratings[safeKey(myName)]; }); });
@@ -3596,7 +3805,8 @@ function onYouTubeIframeAPIReady(){
       logEvent('rated "' + cur.title + '" ' + myStars + '/5');
       mhUpdate(cur.id, m => {
         if(!m.ratings) m.ratings = {};
-        m.ratings[safeKey(myName)] = { stars: myStars, comment, t: Date.now(), name: myName };
+        Object.keys(m.ratings).forEach(k => { if(m.ratings[k] && m.ratings[k].did === nfDid()) delete m.ratings[k]; });
+        m.ratings[safeKey(myName)] = { stars: myStars, comment, t: Date.now(), name: myName, did: nfDid() };
       });
     });
 
@@ -3755,7 +3965,7 @@ function onYouTubeIframeAPIReady(){
     renderLogList();
     document.getElementById('logDeviceSave').addEventListener('click', () => {
       const v = document.getElementById('logDevice').value.trim();
-      try{ localStorage.setItem('wtb_device', JSON.stringify(v)); }catch(e){}
+      try{ localStorage.setItem('wtb_device', JSON.stringify(v)); }catch(e){} try{ nfNameSweep(); }catch(e){}
       if(window.__wtbPresenceRename) window.__wtbPresenceRename(v);
     });
     overlay.classList.add('open');
@@ -4224,8 +4434,13 @@ function onYouTubeIframeAPIReady(){
     if(btn.id === 'telescopeHotspot'){ btn.addEventListener('click', openConstellation); return; }
     btn.addEventListener('click', () => openPanel(btn.dataset.act));
   });
-  document.getElementById('panelClose').addEventListener('click', () => overlay.classList.remove('open'));
-  overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('open'); });
+  function closePanelSmooth(){
+    if(!overlay.classList.contains('open') || overlay.classList.contains('closing')) return;
+    overlay.classList.add('closing');
+    setTimeout(() => { overlay.classList.remove('open', 'closing'); }, 220);
+  }
+  document.getElementById('panelClose').addEventListener('click', closePanelSmooth);
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) closePanelSmooth(); });
 
   // ---------- THE CONSTELLATION OF US ----------
   const constellationEl = document.getElementById('constellation');
@@ -6365,7 +6580,7 @@ function onYouTubeIframeAPIReady(){
   });
   function save(){
     var n = nameIn.value.trim();
-    put('wtb_device', n); put('wtb_device_icon', pick);
+    put('wtb_device', n); put('wtb_device_icon', pick); try{ window.__wtbNameSweep && window.__wtbNameSweep(); }catch(e){}
     refreshMe(); pro.classList.remove('open');
     if(window.__wtbPresenceRename) window.__wtbPresenceRename(n);
   }
@@ -6582,6 +6797,40 @@ function onYouTubeIframeAPIReady(){
     };
     grid.addEventListener('click', grid._shufH);
   };
+})();
+</script>
+<script>
+(function(){
+  var mq = window.matchMedia('(pointer:coarse)'), timer, hideT, shown = null, fired = false, sx = 0, sy = 0;
+  function el(e){ var t = e.target; return t && t.nodeType === 3 ? t.parentNode : t; }
+  function hot(e){ var t = el(e); return t && t.closest ? t.closest('.hotspot') : null; }
+  function hide(){ if(shown){ shown.classList.remove('lp-show'); shown = null; } }
+  document.addEventListener('touchstart', function(e){
+    var h = hot(e); if(!h){ hide(); return; } if(!mq.matches) return;
+    fired = false; var t = e.touches[0]; sx = t.clientX; sy = t.clientY; clearTimeout(timer);
+    timer = setTimeout(function(){
+      fired = true; hide(); h.classList.add('lp-show'); shown = h;
+      try{ if(navigator.vibrate) navigator.vibrate(12); }catch(_){}
+      clearTimeout(hideT); hideT = setTimeout(hide, 2600);
+    }, 380);
+  }, { passive:true });
+  document.addEventListener('touchmove', function(e){ var t = e.touches[0]; if(t && (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10)) clearTimeout(timer); }, { passive:true });
+  ['touchend','touchcancel'].forEach(function(n){ document.addEventListener(n, function(){ clearTimeout(timer); setTimeout(function(){ fired = false; }, 500); }, { passive:true }); });
+  // a long press only shows the name; it must not also open the island
+  document.addEventListener('click', function(e){ if(fired && hot(e)){ e.preventDefault(); e.stopPropagation(); fired = false; } }, true);
+  document.addEventListener('contextmenu', function(e){ var t = el(e); if(t && t.closest && t.closest('.hotspot, .hub-canopy')) e.preventDefault(); });
+  document.addEventListener('selectstart', function(e){ if(hot(e)) e.preventDefault(); });
+})();
+</script>
+<script>
+// ---------- v13.5: finer per-island theme tag (data-theme) from the panel title; one observer ----------
+(function(){
+  var t = document.getElementById('panelTitle'), box = document.getElementById('panelBox'); if(!t || !box) return;
+  var M = [[/sakura/i,'sakura'],[/chua/i,'chua'],[/heart tree/i,'tree'],[/river/i,'river'],[/garden of blooms/i,'garden'],[/home of comfort/i,'cottage'],
+           [/dreaming sky/i,'sky'],[/book of us/i,'book'],[/heart room/i,'heart'],[/prayers/i,'prayers'],[/movie/i,'movies']];
+  function tag(){ var s = t.textContent || '', k = ''; for(var i = 0; i < M.length; i++){ if(M[i][0].test(s)){ k = M[i][1]; break; } }
+    if(k) box.setAttribute('data-theme', k); else box.removeAttribute('data-theme'); }
+  new MutationObserver(tag).observe(t, {childList:true, characterData:true, subtree:true}); tag();
 })();
 </script>
 </body>
