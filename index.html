@@ -281,13 +281,16 @@
 
   .energy-string{ position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; }
   #ePathGlow{ fill:none; stroke:rgba(226,190,235,.28); stroke-width:7; vector-effect:non-scaling-stroke; stroke-linecap:round; transition:stroke 1.6s ease; }
-  #ePathCore{ fill:none; stroke:rgba(250,232,246,.85); stroke-width:1.6; vector-effect:non-scaling-stroke; stroke-linecap:round; animation:stringHum 3s ease-in-out infinite; transition:stroke 1.6s ease; }
+  #ePathMid{ fill:none; stroke:rgba(238,200,236,.2); stroke-width:4.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round; animation:stringBreath 7s ease-in-out infinite; transition:stroke 1.6s ease; }
+  #ePathCore{ fill:none; stroke:rgba(252,238,248,.92); stroke-width:1.3; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round; animation:stringHum 5.5s ease-in-out infinite; transition:stroke 1.6s ease; }
   #ePathDash{ fill:none; stroke:rgba(249,211,235,.9); stroke-width:2.2; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:1.2 7; animation:dashFlow 2.6s linear infinite; transition:stroke 1.6s ease; }
   .hub-canopy.galaxy #ePathGlow{ stroke:rgba(150,195,235,.3); }
+  .hub-canopy.galaxy #ePathMid{ stroke:rgba(170,208,242,.22); }
   .hub-canopy.galaxy #ePathCore{ stroke:rgba(220,235,250,.9); }
   .hub-canopy.galaxy #ePathDash{ stroke:rgba(246,160,200,.85); }
   .hub-canopy.galaxy .energy-orb{ fill:#dceeff; }
-  @keyframes stringHum{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
+  @keyframes stringHum{ 0%,100%{ opacity:.74; } 50%{ opacity:1; } }
+  @keyframes stringBreath{ 0%,100%{ opacity:.65; } 50%{ opacity:1; } }
   @keyframes dashFlow{ from{ stroke-dashoffset:0; } to{ stroke-dashoffset:-16.4; } }
   .energy-orb{ fill:#eec7df; filter:url(#stringGlow); }
   .hotspot.letter{ left:5%; top:16%; }
@@ -470,10 +473,25 @@
 
   .hub-progress{ position:absolute; bottom:4%; left:0; right:0; text-align:center; z-index:2; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:rgba(255,246,252,.45); pointer-events:none; }
 
-  .continue-link{ position:absolute; bottom:9%; left:0; right:0; text-align:center; z-index:4; opacity:0; transition:opacity 1.4s ease; pointer-events:none; }
-  .continue-link.show{ opacity:1; pointer-events:auto; }
-  .continue-link button{ background:none; border:none; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:var(--gold); cursor:pointer; letter-spacing:.06em; border-bottom:1px solid rgba(226,190,235,.4); padding-bottom:2px; }
-  .continue-link button:hover{ color:#fff; }
+  .continue-link{ position:fixed; left:auto; right:max(18px, env(safe-area-inset-right, 0px)); bottom:var(--rw-bottom, calc(env(safe-area-inset-bottom, 0px) + 20px)); text-align:right; z-index:201; opacity:0; transform:translateY(8px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1); pointer-events:none; }
+  .continue-link.rw-on{ opacity:1; transform:none; pointer-events:auto; }
+  .continue-link button{ all:unset; box-sizing:border-box; position:relative; overflow:hidden; display:inline-flex; align-items:center; gap:10px; min-height:44px; padding:8px 20px 8px 12px; border-radius:999px; cursor:pointer;
+    font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; letter-spacing:.05em; color:#fbeaf6; -webkit-tap-highlight-color:transparent;
+    background:linear-gradient(135deg, rgba(70,38,104,.78), rgba(26,14,48,.82)); border:1px solid rgba(255,214,150,.4);
+    box-shadow:0 8px 24px rgba(6,2,16,.55), 0 0 18px rgba(226,150,220,.18), inset 0 1px 0 rgba(255,255,255,.14);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.2), box-shadow .4s ease, border-color .4s ease, color .3s ease; }
+  .continue-link button::after{ content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; background:linear-gradient(100deg, transparent, rgba(255,240,250,.28), transparent); transform:skewX(-18deg); transition:left .7s ease; pointer-events:none; }
+  .continue-link button:hover{ color:#fff; border-color:rgba(255,226,170,.8); transform:translateY(-2px); box-shadow:0 12px 30px rgba(6,2,16,.6), 0 0 28px rgba(240,160,226,.4), inset 0 1px 0 rgba(255,255,255,.2); }
+  .continue-link button:hover::after{ left:130%; }
+  .continue-link button:active{ transform:translateY(0) scale(.96); }
+  .continue-link button:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+  .continue-link .rw-ic{ width:26px; height:26px; flex:none; overflow:visible; filter:drop-shadow(0 0 5px rgba(255,214,150,.55)); }
+  .continue-link .rw-ring{ fill:none; stroke:#ffd9a0; stroke-width:1.4; transform-origin:12px 12px; }
+  .continue-link .rw-core{ fill:rgba(255,168,222,.9); }
+  .continue-link .rw-spark{ fill:#fff6c2; transform-origin:12px 5px; animation:rwTwinkle 3.2s ease-in-out infinite; }
+  .continue-link button:hover .rw-ring{ stroke:#fff; }
+  @keyframes rwTwinkle{ 0%,100%{ opacity:.45; transform:scale(.7); } 50%{ opacity:1; transform:scale(1); } }
+  @media (prefers-reduced-motion: reduce){ .continue-link .rw-spark{ animation:none; } .continue-link button, .continue-link button::after{ transition:none; } }
 
   /* ---------- OVERLAY PANEL ---------- */
   #overlay{ position:fixed; inset:0; background:transparent; display:none; align-items:stretch; justify-content:flex-end; z-index:100; padding:0; pointer-events:none; }
@@ -606,7 +624,6 @@
     .skip-note{ bottom:16px; right:16px; font-size:11px; }
     /* progress + continue link */
     .hub-progress{ font-size:11px; bottom:3%; }
-    .continue-link{ bottom:8%; }
     /* hill layers */
     .hill-far{ height:40%; }
     .hill-mid{ height:32%; }
@@ -693,7 +710,7 @@
 
   /* ===== v4: voices ===== */
   .hotspot.voice-sakura{ left:4%; top:3%; }
-  .hotspot.voice-chua{ left:88%; top:82%; }
+  .hotspot.voice-chua{ left:88%; top:74%; }
   .hotspot.speaking .icon{ border-color:var(--gold); animation:voiceRipple 1.2s ease-out infinite; }
   @keyframes voiceRipple{ 0%{ box-shadow:0 0 0 0 rgba(226,190,235,.6), 0 0 22px rgba(226,190,235,.5); } 100%{ box-shadow:0 0 0 28px rgba(226,190,235,0), 0 0 22px rgba(226,190,235,.2); } }
   .vc-room{ --vc:#caa1a0; }
@@ -734,6 +751,9 @@
   /* ===== v4: string ===== */
   .energy-orb{ filter:none; fill:#f9d8ed; }
   .energy-halo{ fill:rgba(242,163,213,.2); }
+  .energy-ghost{ fill:rgba(249,216,237,.5); }
+  .hub-canopy.galaxy .energy-ghost{ fill:rgba(205,228,255,.48); }
+  @media (prefers-reduced-motion: reduce){ #ePathCore, #ePathMid, #ePathDash{ animation:none !important; } }
 
   /* ===== v4: design + mobile polish ===== */
   html{ -webkit-text-size-adjust:100%; }
@@ -765,7 +785,7 @@
   .skip-note{ bottom:calc(24px + env(safe-area-inset-bottom, 0px)); }
   @media (max-width:720px){
     .hotspot.voice-sakura{ left:26%; top:10%; }
-    .hotspot.voice-chua{ left:64%; top:78%; }
+    .hotspot.voice-chua{ left:64%; top:68%; }
     .panel{ max-height:78vh; max-height:78dvh; padding-bottom:calc(30px + env(safe-area-inset-bottom, 0px)); }
     .hub-progress{ bottom:calc(3% + env(safe-area-inset-bottom, 0px)); }
   }
@@ -1141,7 +1161,7 @@
   .hotspot:nth-of-type(3n) .icon::before{ animation-delay:-2.4s; }
 
   /* --- B6. the string's glow: wide soft stroke instead of a blur filter redrawn every frame --- */
-  #ePathGlow{ stroke-width:10; stroke:rgba(226,190,235,.14); }
+  #ePathGlow{ stroke-width:15; stroke:rgba(226,190,235,.1); stroke-linejoin:round; }
 
   @media (prefers-reduced-motion: reduce){ .hotspot .icon::before, .void-glow{ animation:none !important; } }
 
@@ -1164,7 +1184,8 @@
   @media (max-width:720px){
     .hotspot.voice-sakura{ left:30%; top:22%; }
     .hub-progress{ bottom:calc(env(safe-area-inset-bottom, 0px) + 74px); }
-    .continue-link{ bottom:calc(env(safe-area-inset-bottom, 0px) + 100px); }
+    .continue-link{ bottom:var(--rw-bottom, calc(env(safe-area-inset-bottom, 0px) + 16px)); right:max(12px, env(safe-area-inset-right, 0px)); }
+    .continue-link button{ font-size:15px; padding:6px 16px 6px 10px; }
   }
 
   /* --- FIX 2: no blur filters over the moving background --- */
@@ -1521,6 +1542,8 @@
 .item-grid.shuffling .item-card{ animation:lgOut2 .4s cubic-bezier(.5,0,.75,.4) both; animation-delay:calc(var(--d,0) * 24ms); }
 @keyframes lgDeal2{ from{ opacity:0; transform:translateY(20px) scale(.96); } to{ opacity:1; transform:none; } }
 @keyframes lgOut2{ to{ opacity:0; transform:translateY(-12px) scale(.95); } }
+/* once a deal has finished the cards simply stay put (removing .dealing used to re-trigger cardRise = the second flicker) */
+.item-grid.dealt:not(.shuffling) .item-card{ animation:none !important; opacity:1; }
 /* v13.2: island names on long press (touch), no text selection / callout */
 .hotspot, .hotspot *, .hub-canopy{ -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent; }
 .hotspot{ touch-action:manipulation; }
@@ -1794,6 +1817,10 @@
 #dx-toast.show{ opacity:1; transform:translate(-50%,0); }
 #dx-toast::before{ content:'! '; color:var(--gold); }
 #dx-menu.leaving .dx-card{ pointer-events:none; }
+@keyframes dxArrive{ from{ opacity:0; transform:translateY(34px) scale(.88); } 60%{ opacity:1; transform:translateY(-6px) scale(1.03); } to{ opacity:1; transform:none; } }
+#dx-menu.arrive .dx-card, #dx-menu.arrive h2{ animation:dxArrive .75s cubic-bezier(.2,1.2,.4,1) both; }
+#dx-menu.arrive #dx-chewy{ animation-delay:.14s; }
+@media (prefers-reduced-motion:reduce){ #dx-menu.arrive .dx-card, #dx-menu.arrive h2{ animation:none; } }
 #dx-menu.leaving #dx-sachu .dx-cover{ animation:dx-flash .38s steps(2) 1; }
 @keyframes dx-flash{ 50%{ filter:brightness(2.2) saturate(1.4); } }
 
@@ -1983,6 +2010,85 @@
 }
 </style>
 
+
+<style>
+/* ===== Sachu vibe pass: every scene speaks like the "Sachu Universe / light years away" title ===== */
+#stage .sh{ font-family:'Cormorant Garamond',serif; font-style:normal; font-weight:400; letter-spacing:.04em; line-height:1.35; max-width:min(88vw,780px); }
+/* the living shimmer from the hub title */
+#stage .shim, #stage .shim.sh{
+  background:linear-gradient(100deg,#ffd0ea 0%,#f3c9e6 14%,#cdb6e8 30%,#8fd8ee 46%,#fff6c2 58%,#f3c9e6 74%,#ffd0ea 100%);
+  background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+  text-shadow:none !important; display:inline-block;
+  filter:drop-shadow(0 0 14px rgba(243,160,215,.45)) drop-shadow(0 2px 14px rgba(3,1,12,.7));
+  animation:suShine 8s linear infinite, suGlow 5s ease-in-out infinite;
+}
+#stage .sh-hero{ font-size:clamp(40px,9vw,88px); font-weight:300; letter-spacing:.03em; line-height:1.15; }
+#stage .sh-hero-sm{ font-size:clamp(30px,6.4vw,64px); }
+#stage .sh-title{ font-size:clamp(24px,4.6vw,48px); font-weight:400; line-height:1.25; }
+/* soft italic lines, like "approximately 1 bajillion light years away" */
+#stage .sh-whisper{
+  font-style:italic; font-size:clamp(18px,2.6vw,26px); color:rgba(240,222,255,.88);
+  text-shadow:0 0 14px rgba(5,2,12,.9), 0 0 26px rgba(205,182,232,.35) !important;
+}
+/* cute handwritten asides */
+#stage .sh-hand{
+  font-style:italic; font-weight:400; font-size:clamp(20px,3vw,30px);
+  letter-spacing:.04em; color:#f3c9e6; text-shadow:0 0 16px rgba(5,2,12,.9), 0 0 22px rgba(255,150,205,.45) !important;
+}
+/* tiny spaced caps */
+#stage .sh-cap{
+  font-size:clamp(13px,1.8vw,17px); letter-spacing:.38em; text-transform:uppercase; color:rgba(255,246,252,.72);
+  text-shadow:0 0 14px rgba(5,2,12,.95) !important;
+}
+#stage .sh-hint{ font-style:italic; font-size:14px; color:rgba(240,222,255,.7); text-shadow:0 0 12px rgba(5,2,12,.9); }
+
+/* deep-galaxy backdrops for the dark scenes */
+#scene-void, #scene-final{ background:radial-gradient(ellipse at 50% 38%,#1a1038 0%,#0b0620 58%,#04020c 100%); }
+
+/* gate: remove the hazy oval behind the rings */
+.galaxy-outerglow{ display:none !important; }
+
+/* gate bits */
+#scene-gate .inscription .g1{ font-size:clamp(20px,3.2vw,32px); }
+#scene-gate .inscription .g2{ font-size:clamp(16px,2.1vw,22px); color:rgba(240,222,255,.85); margin-top:8px; }
+#scene-gate .inscription .g3{ font-size:clamp(20px,2.8vw,30px); color:#ffd0ea; margin-top:6px; }
+#scene-gate .inscription .g1 .shim{ filter:drop-shadow(0 0 12px rgba(243,160,215,.4)); }
+#nameInput::placeholder{ font-style:italic; color:rgba(240,222,255,.4); letter-spacing:.06em; }
+#stage .seal-cap{ letter-spacing:.2em; }
+#stage .gate-msg{ font-size:16px; color:#ffd0ea; text-shadow:0 0 14px rgba(5,2,12,.9); }
+@media (max-width:720px){
+  #scene-gate .inscription .g1{ font-size:clamp(18px,5.2vw,24px); }
+  #scene-gate .inscription .g2{ font-size:clamp(14px,3.8vw,18px); }
+  #scene-gate .inscription .g3{ font-size:clamp(18px,5vw,24px); }
+}
+@media (prefers-reduced-motion:reduce){ #stage .shim{ animation:none; } }
+</style>
+
+<style>
+/* ===== gate animation polish: no snap, staggered rings, soft core, burst canvas does the rest ===== */
+.galaxy-rings{ transform:rotate(-22deg); }
+.ring{ transform-box:fill-box; transform-origin:center; }
+.galaxy-core{ transform-box:fill-box; transform-origin:center; transition:transform 2.2s cubic-bezier(.3,0,.2,1), opacity 1.6s ease; }
+
+/* blooming: the rings draw in one after another while the core swells */
+.arch.blooming .galaxy-core{ r:30; transform:scale(1.5); }
+.arch.blooming .ring{ filter:drop-shadow(0 0 5px rgba(243,160,215,.7)); }
+.arch.blooming .ring-outer{ animation:ringPulse 1.3s cubic-bezier(.3,0,.2,1) both; }
+.arch.blooming .ring-mid{ animation:ringPulse 1.3s cubic-bezier(.3,0,.2,1) .1s both; }
+.arch.blooming .ring-inner{ animation:ringPulse 1.3s cubic-bezier(.3,0,.2,1) .2s both; }
+@keyframes ringPulse{ 0%{ transform:scale(1); } 55%{ transform:scale(.93); } 100%{ transform:scale(1); } }
+
+/* opening: each ring leaves on its own, keeping its tilt the whole way */
+.arch.opening .galaxy-rings{ animation:none; transform:rotate(-22deg) scale(1.6); opacity:0;
+  transition:transform 2.6s cubic-bezier(.3,0,.15,1), opacity 2.2s ease .1s; }
+.arch.opening .ring{ animation:none; opacity:0; transition:transform 2.2s cubic-bezier(.3,0,.15,1), opacity 1.8s ease, stroke-width 1.6s ease; }
+.arch.opening .ring-inner{ transform:scale(3.4); }
+.arch.opening .ring-mid{ transform:scale(2.7); transition-delay:.08s; }
+.arch.opening .ring-outer{ transform:scale(2.2); transition-delay:.16s; }
+.arch.opening .galaxy-core{ r:30; animation:none; transform:scale(6); opacity:0;
+  transition:transform 2.4s cubic-bezier(.4,0,.15,1), opacity 1.8s ease .5s; }
+@media (prefers-reduced-motion:reduce){ .arch.blooming .ring{ animation:none; } }
+</style>
 </head>
 <body>
 <script>window.__DX_WAIT = true;</script>
@@ -2027,15 +2133,15 @@
   <!-- ACT I -->
   <section class="scene active" id="scene-void">
     <div class="void-glow"></div>
-    <div class="void-text t1 serif seqline">Hello.</div>
-    <div class="void-text t2 serif seqline">Before every beautiful thing... there was a beginning.</div>
-    <div class="void-text t3 serif seqline">Every story begins somewhere.</div>
+    <div class="void-text t1 sh sh-hero shim seqline">Hello.<span class="su-sp s1"></span><span class="su-sp s2"></span><span class="su-sp s3"></span><span class="su-glint"></span></div>
+    <div class="void-text t2 sh sh-whisper seqline">This place started out as nothing at all.</div>
+    <div class="void-text t3 sh sh-hand seqline">Then, little by little, it wasn't.</div>
   </section>
 
   <!-- ACT II -->
   <section class="scene" id="scene-awakening">
-    <div class="awakening-copy a1 serif seqline">The most beautiful things are not created all at once.</div>
-    <div class="awakening-copy a2 serif seqline">They grow.</div>
+    <div class="awakening-copy a1 sh sh-whisper seqline">Good things take a while.</div>
+    <div class="awakening-copy a2 sh sh-title shim seqline">This one took its time.<span class="su-sp s1"></span><span class="su-sp s2"></span><span class="su-sp s3"></span><span class="su-glint"></span></div>
   </section>
 
   <!-- ACT III -->
@@ -2084,9 +2190,9 @@
         <div class="gate-light"></div>
       </div>
       <div class="inscription">
-        <div class="g1 serif">Every creation has a name.</div>
-        <div class="g2 serif" id="gateSubline">Every story has someone it belongs to.</div>
-        <div class="g3 serif">Who is this world waiting for?</div>
+        <div class="g1 sh sh-title"><span class="shim">Every place has a name.</span></div>
+        <div class="g2 sh sh-whisper" id="gateSubline">And every place is meant for someone.</div>
+        <div class="g3 sh sh-hand">So, whose is it?</div>
       </div>
       <form class="gate-form" id="gateForm" autocomplete="off">
         <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="petalGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#d9a3a8"/><stop offset="1" stop-color="#fbeaea"/></linearGradient><g id="sakPetal"><path d="M0 0C-13-13-15-31-6-42L0-36L6-42C15-31 13-13 0 0Z" fill="url(#petalGrad)" stroke="#f3c9e6" stroke-opacity=".7" stroke-width=".9"/><path d="M0-6V-30" stroke="#b9787f" stroke-opacity=".35" stroke-width=".7" fill="none"/></g><g id="sakBloom"><use href="#sakPetal"/><use href="#sakPetal" transform="rotate(72)"/><use href="#sakPetal" transform="rotate(144)"/><use href="#sakPetal" transform="rotate(216)"/><use href="#sakPetal" transform="rotate(288)"/><g stroke="#f3c9e6" stroke-width=".9" fill="#eec7df" stroke-opacity=".9"><line x1="0" y1="0" x2="3.4" y2="-16.7"/><circle cx="3.4" cy="-16.7" r="1.7"/><line x1="0" y1="0" x2="13.3" y2="-10.6"/><circle cx="13.3" cy="-10.6" r="1.7"/><line x1="0" y1="0" x2="17.0" y2="0.4"/><circle cx="17.0" cy="0.4" r="1.7"/><line x1="0" y1="0" x2="12.7" y2="11.3"/><circle cx="12.7" cy="11.3" r="1.7"/><line x1="0" y1="0" x2="2.5" y2="16.8"/><circle cx="2.5" cy="16.8" r="1.7"/><line x1="0" y1="0" x2="-8.9" y2="14.5"/><circle cx="-8.9" cy="14.5" r="1.7"/><line x1="0" y1="0" x2="-16.1" y2="5.4"/><circle cx="-16.1" cy="5.4" r="1.7"/><line x1="0" y1="0" x2="-15.8" y2="-6.2"/><circle cx="-15.8" cy="-6.2" r="1.7"/><line x1="0" y1="0" x2="-8.1" y2="-14.9"/><circle cx="-8.1" cy="-14.9" r="1.7"/></g><circle r="4.6" fill="#f3c9e6"/><circle r="2" fill="#7e3864"/></g><g id="gtCorner" fill="none" stroke="url(#gtEdge)" stroke-width="1" stroke-linecap="round"><path d="M22 52V40C22 34 26 31 32 31H52"/><path d="M29 38C29 42 36 42 36 37C36 34 32 34 32 36"/><circle cx="22" cy="55" r="1.1" fill="#f3c9e6" stroke="none"/></g><linearGradient id="gtEdge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6aad0"/><stop offset=".5" stop-color="#ac6492"/><stop offset="1" stop-color="#f3c9e6"/></linearGradient><linearGradient id="gtStone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d5665"/><stop offset=".55" stop-color="#4b3a45"/><stop offset="1" stop-color="#362831"/></linearGradient><filter id="gtGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.1 0 0 0 -.38"/></filter><radialGradient id="sealStone" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#695361"/><stop offset=".6" stop-color="#392c34"/><stop offset="1" stop-color="#1e151b"/></radialGradient><linearGradient id="sealGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#edb7d9"/><stop offset=".5" stop-color="#ab5c8e"/><stop offset="1" stop-color="#e098c6"/></linearGradient><radialGradient id="sealGlowGrad"><stop offset="0" stop-color="#f5badf" stop-opacity=".85"/><stop offset=".6" stop-color="#f3c9e6" stop-opacity=".25"/><stop offset="1" stop-color="#f3c9e6" stop-opacity="0"/></radialGradient></defs></svg>
@@ -2101,13 +2207,13 @@
             <circle cx="180" cy="15" r="14" fill="#2a1f26" stroke="url(#gtEdge)" stroke-width="1.2"/><circle cx="180" cy="15" r="11" fill="none" stroke="#f3c9e6" stroke-width=".4" opacity=".5"/>
             <use href="#sakBloom" transform="translate(180 15) scale(.24)"/>
             <path d="M42 51H76M284 51H318" stroke="#f3c9e6" stroke-width=".6" opacity=".45"/><path d="M82 51l3-3 3 3-3 3zM272 51l3-3 3 3-3 3z" fill="#f3c9e6" opacity=".7"/>
-            <text x="180" y="55.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="12" letter-spacing="5" fill="#110a0e" opacity=".85">SPEAK THE NAME</text>
-            <text x="180" y="54.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="12" letter-spacing="5" fill="#e2a4cb" opacity=".85">SPEAK THE NAME</text>
+            <text x="180" y="55.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="12" letter-spacing="5" fill="#110a0e" opacity=".85">ENTER A NAME</text>
+            <text x="180" y="54.5" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="12" letter-spacing="5" fill="#e2a4cb" opacity=".85">ENTER A NAME</text>
             <rect x="48" y="80" width="264" height="36" rx="8" fill="#140c11" opacity=".82" stroke="#000" stroke-opacity=".55"/>
             <path d="M52 117.4H308" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
             <rect class="gt-slot-ring" x="48" y="80" width="264" height="36" rx="8" fill="none" stroke="#e6aad0" stroke-width="1"/>
           </svg>
-          <div class="stone-input-wrap"><input id="nameInput" type="text" placeholder="whisper the name…" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Enter the name" /></div>
+          <div class="stone-input-wrap"><input id="nameInput" type="text" placeholder="type a name…" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Enter the name" /></div>
         </div>
         <button type="submit" class="continue-btn" aria-label="Continue">
           <svg class="seal" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
@@ -2119,7 +2225,7 @@
             <circle cx="60" cy="60" r="37.5" fill="none" stroke="#f3c9e6" stroke-width=".5" opacity=".45"/>
             <g class="seal-bloom"><use href="#sakBloom" transform="translate(60 60) scale(.74)"/></g>
           </svg>
-          <span class="seal-cap">continue</span>
+          <span class="seal-cap">enter</span>
         </button>
         <div class="gate-msg" id="gateMsg" role="status" aria-live="polite"></div>
       </form>
@@ -2128,18 +2234,18 @@
 
   <!-- ACT IV -->
   <section class="scene" id="scene-valley">
-    <div class="valley-copy vc1 serif seqline" id="valleyGreeting">Welcome, Sakura.</div>
-    <div class="valley-copy vc2 serif seqline">A world is made from many small things.</div>
-    <div class="valley-copy vc3 serif seqline">Just like a person.</div>
+    <div class="valley-copy vc1 sh sh-hero sh-hero-sm shim seqline" id="valleyGreeting">Welcome, Sakura.</div>
+    <div class="valley-copy vc2 sh sh-whisper seqline">A world is just a lot of small things.</div>
+    <div class="valley-copy vc3 sh sh-hand seqline">So is a person.</div>
 
     <div class="valley-flower-wrap" id="valleyFlowerWrap">
       <button class="valley-flower" id="valleyFlowerBtn" aria-label="A small flower beside the path" title="A small flower beside the path"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="12" r="2.2"/></svg></button>
-      <div class="valley-flower-hint serif">a small flower waits beside the path</div>
+      <div class="valley-flower-hint sh sh-hint">there's a flower by the path</div>
     </div>
     <div class="valley-flower-msg" id="valleyFlowerMsg">
-      <div class="valley-copy serif seqline" id="vf1">Before this garden became a world...</div>
-      <div class="valley-copy serif seqline" id="vf2">there was only one flower waiting.</div>
-      <div class="valley-copy serif seqline" id="vf3">And somehow, that was enough to begin everything.</div>
+      <div class="valley-copy sh sh-whisper seqline" id="vf1">Before any of this, there was one flower.</div>
+      <div class="valley-copy sh sh-hand seqline" id="vf2">Just one.</div>
+      <div class="valley-copy sh sh-title shim seqline" id="vf3">That turned out to be enough to start with.</div>
     </div>
   </section>
 
@@ -2157,6 +2263,7 @@
       <svg class="energy-string" id="energyString" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs><filter id="stringGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.6"/></filter></defs>
         <path id="ePathGlow" filter="url(#stringGlow)"/>
+        <path id="ePathMid"/>
         <path id="ePathCore"/>
         <path id="ePathDash"/>
         <circle class="energy-orb" id="orb0" r="0.8"/>
@@ -2242,22 +2349,22 @@
 
       <div class="book-toast" id="bookToast">a path has appeared behind the great tree...</div>
       <div class="hub-progress" id="hubProgress">0 of 51 small things discovered</div>
-      <div class="continue-link" id="continueLink"><button id="toFinalBtn">return to the beginning, and see how far it's come</button></div>
+      <div class="continue-link" id="continueLink"><button id="toFinalBtn" type="button" aria-label="Return to the worlds"><svg class="rw-ic" viewBox="0 0 24 24" aria-hidden="true"><ellipse class="rw-ring" cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(-24 12 12)"/><circle class="rw-core" cx="12" cy="12" r="3.3"/><path class="rw-spark" d="M12 2.2l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z"/></svg><span class="rw-txt">return to the worlds</span></button></div>
     </div>
   </section>
 
   <!-- FINAL ACT -->
   <section class="scene" id="scene-final">
-    <div class="final-copy serif seqline" id="f1">At the beginning, there was only darkness.</div>
-    <div class="final-copy serif seqline" id="f2">Then came light.</div>
-    <div class="final-copy serif seqline" id="f3">Then came life.</div>
-    <div class="final-copy serif seqline" id="f4">And then...</div>
-    <div class="final-name serif seqline" id="f5">You arrived.</div>
-    <div class="final-copy serif seqline" id="f6">Thank you for being someone worth creating a world for.</div>
-    <div class="final-copy serif seqline" id="f7">And this world was not made for one moment.</div>
-    <div class="final-copy serif seqline" id="f8">It was made to grow with us — new memories planted here, year after year, for as long as our story continues.</div>
-    <div class="final-name serif seqline" id="fEnd">For Sakura.</div>
-    <button class="final-return serif" id="finalReturn">return to the valley</button>
+    <div class="final-copy sh sh-whisper seqline" id="f1">It started out dark.</div>
+    <div class="final-copy sh sh-hand seqline" id="f2">Then there was light.</div>
+    <div class="final-copy sh sh-whisper seqline" id="f3">Then there was everything else.</div>
+    <div class="final-copy sh sh-cap seqline" id="f4">And then...</div>
+    <div class="final-name sh sh-hero shim seqline" id="f5">you showed up.<span class="su-sp s1"></span><span class="su-sp s2"></span><span class="su-sp s3"></span><span class="su-glint"></span></div>
+    <div class="final-copy sh sh-whisper seqline" id="f6">Thank you for being the reason this exists.</div>
+    <div class="final-copy sh sh-hand seqline" id="f7">It isn't meant to be finished.</div>
+    <div class="final-copy sh sh-whisper seqline" id="f8">It will keep growing, with new memories added over time, for as long as we do.</div>
+    <div class="final-name sh sh-hero shim seqline" id="fEnd">For Sakura.<span class="su-sp s1"></span><span class="su-sp s2"></span><span class="su-sp s3"></span><span class="su-glint"></span></div>
+    <button class="final-return serif" id="finalReturn">back to the valley</button>
   </section>
 </div>
 
@@ -2310,7 +2417,7 @@
   </div>
 </div>
 
-<div class="skip-note" id="skipNote">skip to the gate →</div>
+<div class="skip-note" id="skipNote">skip ahead</div>
 <div class="skip-note" id="valleySkip" role="button" tabindex="0">skip welcome →</div>
 <button class="music-toggle" id="musicToggle" title="toggle music" aria-label="toggle music">
   <svg class="mt-on" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
@@ -2559,7 +2666,14 @@ function onYouTubeIframeAPIReady(){
       Object.keys(r).forEach(k=>{ if(r[k]&&r[k].did===did&&k!==nk){ delete r[k]; ch=true; } }); });
     if(ch) saveLS('wtb_movies',mv);
     ['wtb_memories','wtb_plans'].forEach(key=>{ const a=loadLS(key,[]); if(!Array.isArray(a)) return; let c=false;
-      a.forEach(x=>{ if(x&&x.by===oldN){ x.by=newN; c=true; } if(x&&x.editedBy===oldN){ x.editedBy=newN; c=true; } }); if(c) saveLS(key,a); });
+      a.forEach(x=>{ if(!x) return;
+        if(x.by===oldN && (!x.did || x.did===did || force)){ x.by=newN; x.did=did; c=true; }
+        else if(x.did===did && x.by && x.by!==newN){ x.by=newN; c=true; }
+        if(x.editedBy===oldN && (!x.editedDid || x.editedDid===did || force)){ x.editedBy=newN; x.editedDid=did; c=true; }
+        else if(x.editedDid===did && x.editedBy && x.editedBy!==newN){ x.editedBy=newN; c=true; } });
+      if(c) saveLS(key,a); });
+    try{ const lg=loadLS('wtb_log',[]); let lc=false;
+      if(Array.isArray(lg)){ lg.forEach(e=>{ if(e && ((e.did===did && e.device!==newN) || (e.device===oldN && !e.did))){ e.device=newN; e.did=did; lc=true; } }); if(lc) saveLS('wtb_log',lg); } }catch(e){}
     try{ const vr=fbdb.ref('world/voices_meta'); vr.once('value').then(sn=>{ const o=sn.val()||{}, up={};
       Object.keys(o).forEach(k=>{ const v=o[k]; if(v&&v.by===oldN&&(!v.did||v.did===did||force)) up[k+'/by']=newN; });
       if(Object.keys(up).length) vr.update(up); }).catch(()=>{}); }catch(e){}
@@ -2689,10 +2803,10 @@ function onYouTubeIframeAPIReady(){
   function startSequence(){
     showScene('void');
     skipNote.classList.add('show');
-    playSequence(voidLines, { holds:[3000,4200,4200], gap:700, onDone: () => {
+    playSequence(voidLines, { holds:[3200,5200,4400], gap:700, onDone: () => {
       if(!introActive) return;
       showScene('awakening');
-      playSequence(awakeningLines, { holds:[4000,4000], gap:700, onDone: () => {
+      playSequence(awakeningLines, { holds:[5000,4200], gap:700, onDone: () => {
         if(!introActive) return;
         goToGate();
       }});
@@ -2718,7 +2832,7 @@ function onYouTubeIframeAPIReady(){
   const nameInput = document.getElementById('nameInput');
   const gateMsg = document.getElementById('gateMsg');
   const valleyGreeting = document.getElementById('valleyGreeting');
-  const wrongMessages = ["The world is still waiting.", "Listen to your heart.", "You already know the answer."];
+  const wrongMessages = ["Not quite.", "Try again.", "You know this one."];
   let wrongCount = 0;
 
   const stoneInputWrap = document.querySelector('.stone-input-wrap');
@@ -2788,8 +2902,8 @@ function onYouTubeIframeAPIReady(){
       valleyGreeting.textContent = returningVisitor ? `Welcome back, ${name}.` : `Welcome, ${name}.`;
       showScene('valley');
       const valleyLines = [document.getElementById('valleyGreeting'), document.querySelector('#scene-valley .vc2'), document.querySelector('#scene-valley .vc3')];
-      playSequence(valleyLines, { holds:[4000,4000,4000], gap:700, onDone: showFirstFlower });
-    }, 4800);
+      playSequence(valleyLines, { holds:[4000,4600,4200], gap:700, onDone: showFirstFlower });
+    }, 5400);
   }
 
   // ---------- The First Flower ----------
@@ -2809,7 +2923,7 @@ function onYouTubeIframeAPIReady(){
       btn.classList.add('bloomed'); clearTimeout(safetyT);
       hint.classList.add('hide');
       const vfLines = ['vf1','vf2','vf3'].map(id => document.getElementById(id));
-      playSequence(vfLines, { holds:[3500,3500,3800], gap:700, onDone: () => setTimeout(goOn, 1200) });
+      playSequence(vfLines, { holds:[3600,4200,4400], gap:700, onDone: () => setTimeout(goOn, 1200) });
     });
     // safety net: if she never clicks the flower, don't leave her stuck here
     var safetyT = setTimeout(goOn, 20000);
@@ -3744,7 +3858,7 @@ function onYouTubeIframeAPIReady(){
         rec.photo = null; rec.video = null;
       }
       rec.title = title; rec.date = date; rec.story = story; rec.achv = achv;
-      if(!isNew){ rec.edited = Date.now(); rec.editedBy = deviceName(); } else { rec.by = deviceName(); all.push(rec); }
+      if(!isNew){ rec.edited = Date.now(); rec.editedBy = deviceName(); rec.editedDid = nfDid(); } else { rec.by = deviceName(); rec.did = nfDid(); all.push(rec); }
       if((window.__memTab || 'all') !== 'all') window.__memTab = rec.video ? 'video' : rec.photo ? 'photo' : 'note';
 
       let saved = true;
@@ -4743,7 +4857,33 @@ function onYouTubeIframeAPIReady(){
     "he thinks about the first hug","he thinks ur worth every timezone","he thinks about ur proudest moments","he thinks ur getting prettier, rude",
     "he thinks about growing old with u","he thinks u make his heart calm","he thinks about ur next visit here","he thinks ur loved. a lot.",
     "he thinks about u. always.","he thinks u should know: ur enough","he thinks about forever, casually","he thinks ur the whole point",
-    "he thinks ur giggles are contagious","he thinks about ur morning hair","he thinks u make bad days survivable","he thinks the stars are jealous of u"
+    "he thinks ur giggles are contagious","he thinks about ur morning hair","he thinks u make bad days survivable","he thinks the stars are jealous of u",
+    "he thinks about pizza. then u. then pizza. then u.",
+    "he thinks ur cuter than every cat on the internet",
+    "he thinks u steal the blanket and he'd let u",
+    "he thinks ur 'wait one sec' lasts an hour and he waits anyway",
+    "he thinks about ur 'idk u choose' answers (he is still choosing)",
+    "he thinks he misses u more. he's not letting u win this one",
+    "he thinks ur the only person allowed to steal his fries",
+    "he thinks about ur 3am voice notes (he replays them, no shame)",
+    "he thinks ur chaotic and he's here for every second",
+    "he thinks about u so much his brain is buffering",
+    "he thinks ur the reason his phone battery dies",
+    "he thinks about how u say 'nothing' when it's definitely something",
+    "he thinks ur laugh is a free daily upgrade",
+    "he thinks his brain has 12 tabs open and all of them are u",
+    "he thinks u'd win a staring contest and he'd lose on purpose",
+    "he thinks about ur 'i'm not hungry' then eating his food",
+    "he thinks ur the plot twist he never saw coming",
+    "he thinks ur cuter than his phone at 100% battery",
+    "he thinks about the speech he'll give when u say 'ok fine, u were right'",
+    "he thinks ur snack choices are suspicious but he loves u",
+    "he thinks about ur dramatic sighs (award-winning)",
+    "he thinks he'd carry ur bags and complain the whole way, lovingly",
+    "he thinks about ur 'omg wait' stories that start in the middle",
+    "he thinks ur the only notification worth a vibration",
+    "he thinks u are 10/10, no notes, he checked twice",
+    "he thinks about u instead of doing literally anything else"
   ];
   (function(){
     const el = document.getElementById('thinkMsg');
@@ -4763,153 +4903,149 @@ function onYouTubeIframeAPIReady(){
     setInterval(show, 8000);
   })();
 
-  // ---------- the energy string (living thread through the circles) ----------
+  // ---------- the energy string (living thread of light through the circles) ----------
+  // The svg viewBox is stretched (preserveAspectRatio none), so percent units distort distance and curvature.
+  // Geometry is therefore built in SCREEN PIXELS, smoothed with a centripetal Catmull-Rom spline (no loops or cusps
+  // on unevenly spaced stops), then converted to 0-100 units only when drawn. Travelers are placed by pixel distance.
   try{
   const eGlow = document.getElementById('ePathGlow');
+  const eMid  = document.getElementById('ePathMid');
   const eCore = document.getElementById('ePathCore');
   const eDash = document.getElementById('ePathDash');
-  // orbs: real ellipses sized in screen pixels, so they stay round on tall phones (the thread's viewBox is stretched)
   const orbNS = 'http://www.w3.org/2000/svg';
   const orbOld = [document.getElementById('orb0'), document.getElementById('orb1'), document.getElementById('orb2')];
-  const orbSvg = orbOld[0].parentNode;
-  const orbs = [], halos = [];
-  for(let i = 0; i < 5; i++){
-    const core = document.createElementNS(orbNS, 'ellipse'); core.setAttribute('class', 'energy-orb');
-    const halo = document.createElementNS(orbNS, 'ellipse'); halo.setAttribute('class', 'energy-halo');
-    if(orbOld[i]) orbOld[i].remove();
-    orbSvg.appendChild(halo); orbSvg.appendChild(core);
-    orbs.push(core); halos.push(halo);
+  const orbSvg = eCore.parentNode;
+  orbOld.forEach(o => { if(o) o.remove(); });
+  const NORB = 5, NGHOST = 3, GHOST_GAP = 15, SPEED = 78;       // travelers, tail dots, tail spacing (px), px per second
+  const orbs = [], halos = [], ghosts = [];
+  for(let i = 0; i < NORB; i++){
+    const mk = cls => { const e = document.createElementNS(orbNS, 'ellipse'); e.setAttribute('class', cls); e.setAttribute('opacity', '0'); orbSvg.appendChild(e); return e; };
+    halos.push(mk('energy-halo'));
+    ghosts.push(Array.from({ length: NGHOST }, () => mk('energy-ghost')));
+    orbs.push(mk('energy-orb'));
   }
   // route through the circles — computed from their real on-screen centers, with a static fallback
   const HOT_SELECTORS = ['.hotspot.voice-sakura','.hotspot.letter','.hotspot.tree','.hotspot.book','.hotspot.heart','.hotspot.movies','.hotspot.river','.hotspot.memory','.hotspot.telescope','.hotspot.cottage','.hotspot.sky','.hotspot.garden','.hotspot.prayers','.hotspot.voice-chua'];
   const FALLBACK_ROUTE = [ [7,8],[8,22],[21,40],[19,58],[13,78],[33,64],[51,72],[59,58],[43,36],[67,32],[87,28],[79,50],[91,70],[92,86] ];
-  // catmull-rom sampling into a smooth polyline
-  function catmullSample(pts, subdiv){
+  function centripetal(pts, spacing){
+    const n = pts.length; if(n < 2) return pts.map(p => p.slice());
+    const ext = [[2*pts[0][0]-pts[1][0], 2*pts[0][1]-pts[1][1]]].concat(pts, [[2*pts[n-1][0]-pts[n-2][0], 2*pts[n-1][1]-pts[n-2][1]]]);
+    const kn = (a, b) => Math.max(Math.sqrt(Math.hypot(b[0]-a[0], b[1]-a[1])), 1e-4);
+    const lp = (A, B, ta, tb, t) => { const u = (t-ta)/(tb-ta); return [A[0]+(B[0]-A[0])*u, A[1]+(B[1]-A[1])*u]; };
     const out = [];
-    for(let i = 0; i < pts.length - 1; i++){
-      const p0 = pts[Math.max(0, i-1)], p1 = pts[i], p2 = pts[i+1], p3 = pts[Math.min(pts.length-1, i+2)];
-      for(let s = 0; s < subdiv; s++){
-        const t = s / subdiv, t2 = t*t, t3 = t2*t;
-        out.push([
-          0.5*((2*p1[0]) + (-p0[0]+p2[0])*t + (2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2 + (-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
-          0.5*((2*p1[1]) + (-p0[1]+p2[1])*t + (2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2 + (-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)
-        ]);
+    for(let i = 1; i < ext.length - 2; i++){
+      const P0 = ext[i-1], P1 = ext[i], P2 = ext[i+1], P3 = ext[i+2];
+      const t0 = 0, t1 = t0 + kn(P0,P1), t2 = t1 + kn(P1,P2), t3 = t2 + kn(P2,P3);
+      const steps = Math.max(4, Math.ceil(Math.hypot(P2[0]-P1[0], P2[1]-P1[1]) / spacing * 1.15));
+      for(let s = 0; s < steps; s++){
+        const t = t1 + (t2-t1) * s / steps;
+        const A1 = lp(P0,P1,t0,t1,t), A2 = lp(P1,P2,t1,t2,t), A3 = lp(P2,P3,t2,t3,t);
+        out.push(lp(lp(A1,A2,t0,t2,t), lp(A2,A3,t1,t3,t), t1, t2, t));
       }
     }
-    out.push([pts[pts.length-1][0], pts[pts.length-1][1]]);
+    out.push(pts[n-1].slice());
     return out;
   }
-  let base = [], anchorW = [], disp = [], routePts = FALLBACK_ROUTE;
-  let ux = 0.1, uy = 0.1; // one screen pixel in the thread's 0-100 units
+  let base = [], cum = [], aw = [], disp = [], baseLen = 0, ux = .1, uy = .1;
   function rebuildString(){
-    const hubRect = hubCanopy.getBoundingClientRect();
-    let pts = FALLBACK_ROUTE;
-    if(hubRect.width > 0 && hubRect.height > 0){
-      const measured = [];
-      let ok = true;
+    const hr = hubCanopy.getBoundingClientRect();
+    const W = hr.width || 1, H = hr.height || 1;
+    ux = 100 / W; uy = 100 / H;
+    let pts = null;
+    if(hr.width > 0 && hr.height > 0){
+      const m = []; let ok = true;
       HOT_SELECTORS.forEach(sel => {
-        const icon = document.querySelector(sel + ' .icon');
-        if(!icon){ ok = false; return; }
-        const r = icon.getBoundingClientRect();
-        if(r.width === 0){ ok = false; return; }
-        measured.push([ (r.left + r.width/2 - hubRect.left) / hubRect.width * 100, (r.top + r.height/2 - hubRect.top) / hubRect.height * 100 ]);
+        const ic = document.querySelector(sel + ' .icon'); if(!ic){ ok = false; return; }
+        const r = ic.getBoundingClientRect(); if(!r.width){ ok = false; return; }
+        m.push([r.left + r.width/2 - hr.left, r.top + r.height/2 - hr.top]);
       });
-      if(ok && measured.length === HOT_SELECTORS.length) pts = measured;
+      if(ok && m.length === HOT_SELECTORS.length) pts = m;
     }
-    routePts = pts;
-    if(hubRect.width > 0 && hubRect.height > 0){ ux = 100 / hubRect.width; uy = 100 / hubRect.height; }
-    base = catmullSample(pts, 14);
-    anchorW = base.map(p => {
-      let min = Infinity;
-      pts.forEach(a => { const dx = p[0]-a[0], dy = p[1]-a[1]; const d = Math.sqrt(dx*dx + dy*dy); if(d < min) min = d; });
-      return Math.max(0, Math.min(1, (min - 1.5) / 5));
-    });
-    disp = base.map(() => ({ dx:0, dy:0, vx:0, vy:0 }));
-    // a stable reference length (from the undisturbed base path) — used to pace the
-    // energy orbs smoothly. Measuring the live, wobbling path every frame instead
-    // made the orbs jitter back and forth as the path's length fluctuated with the wobble.
-    baseLen = 0;
-    for(let i = 1; i < base.length; i++){
-      const dx = base[i][0]-base[i-1][0], dy = base[i][1]-base[i-1][1];
-      baseLen += Math.sqrt(dx*dx + dy*dy);
-    }
+    if(!pts) pts = FALLBACK_ROUTE.map(p => [p[0]*W/100, p[1]*H/100]);
+    base = centripetal(pts, 9);
+    cum = [0]; for(let i = 1; i < base.length; i++) cum[i] = cum[i-1] + Math.hypot(base[i][0]-base[i-1][0], base[i][1]-base[i-1][1]);
+    baseLen = cum[cum.length - 1] || 1;
+    // sway is damped to zero near every circle so the thread stays pinned to its stops
+    aw = base.map(p => { let mn = 1e9; pts.forEach(a => { const d = Math.hypot(p[0]-a[0], p[1]-a[1]); if(d < mn) mn = d; });
+      const x = Math.max(0, Math.min(1, (mn - 12) / 46)); return x*x*(3 - 2*x); });
+    disp = base.map(() => ({ x:0, y:0, vx:0, vy:0 }));
   }
-  let baseLen = 0;
   rebuildString();
-  let stringMeasured = false;
-  let drawStart = 0, revealN = -1, activeSince = 0;
+  let stringMeasured = false, drawStart = 0, activeSince = 0, revealN = -1, lastT = 0;
   const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  window.addEventListener('resize', () => { stringMeasured = false; });
-  window.addEventListener('orientationchange', () => { stringMeasured = false; });
-  try{ if(window.ResizeObserver) new ResizeObserver(() => { stringMeasured = false; }).observe(hubCanopy); }catch(e){}
-  let mouse = null;
-  hubCanopy.addEventListener('mousemove', (e) => {
-    const r = hubCanopy.getBoundingClientRect();
-    mouse = { x: (e.clientX - r.left) / r.width * 100, y: (e.clientY - r.top) / r.height * 100 };
-  });
+  const invalidate = () => { stringMeasured = false; };
+  window.addEventListener('resize', invalidate);
+  window.addEventListener('orientationchange', invalidate);
+  try{ if(window.ResizeObserver) new ResizeObserver(invalidate).observe(hubCanopy); }catch(e){}
+  try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(invalidate); }catch(e){}
+  let mouse = null;                                   // pointer / finger in hub pixels
+  const setPointer = (cx, cy) => { const r = hubCanopy.getBoundingClientRect(); mouse = { x: cx - r.left, y: cy - r.top }; };
+  hubCanopy.addEventListener('mousemove', (e) => setPointer(e.clientX, e.clientY));
   hubCanopy.addEventListener('mouseleave', () => { mouse = null; });
-  // phones: the thread bends away from a finger too
-  const touchBend = (e) => {
-    const t0 = e.touches && e.touches[0]; if(!t0) return;
-    const r = hubCanopy.getBoundingClientRect();
-    mouse = { x: (t0.clientX - r.left) / r.width * 100, y: (t0.clientY - r.top) / r.height * 100 };
-  };
+  const touchBend = (e) => { const t0 = e.touches && e.touches[0]; if(t0) setPointer(t0.clientX, t0.clientY); };
   hubCanopy.addEventListener('touchstart', touchBend, { passive:true });
   hubCanopy.addEventListener('touchmove', touchBend, { passive:true });
   hubCanopy.addEventListener('touchend', () => { setTimeout(() => { mouse = null; }, 400); }, { passive:true });
-  const canMeasure = typeof eCore.getTotalLength === 'function';
+  const ss = (a, b, x) => { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x*x*(3 - 2*x); };
+  // point at a pixel distance along the (live, swaying) thread
+  function at(dist){
+    let lo = 0, hi = base.length - 2;
+    while(lo < hi){ const mid = (lo + hi + 1) >> 1; if(cum[mid] <= dist) lo = mid; else hi = mid - 1; }
+    const a = base[lo], b = base[lo+1], da = disp[lo], db = disp[lo+1], seg = (cum[lo+1] - cum[lo]) || 1, u = Math.max(0, Math.min(1, (dist - cum[lo]) / seg));
+    return [ (a[0]+da.x) + ((b[0]+db.x) - (a[0]+da.x)) * u, (a[1]+da.y) + ((b[1]+db.y) - (a[1]+da.y)) * u, lo ];
+  }
+  function placeDot(el, p, rr, op){
+    el.setAttribute('cx', (p[0]*ux).toFixed(3)); el.setAttribute('cy', (p[1]*uy).toFixed(3));
+    el.setAttribute('rx', (rr*ux).toFixed(3));   el.setAttribute('ry', (rr*uy).toFixed(3));
+    el.setAttribute('opacity', op.toFixed(2));
+  }
   function stringFrame(t){
-    if(scenes.hub.classList.contains('active')){
+    requestAnimationFrame(stringFrame);
+    try{
+      if(!scenes.hub.classList.contains('active')){ lastT = 0; return; }
+      const dt = lastT ? Math.min(50, t - lastT) / 16.667 : 1; lastT = t;     // frame-rate independent physics
       if(!activeSince) activeSince = t;
       const settled = reduceMotion || (t - activeSince > 3100);
       if(settled && !stringMeasured){ rebuildString(); stringMeasured = true; if(!drawStart) drawStart = t; }
       const prog = !settled ? 0 : (reduceMotion ? 1 : Math.min(1, (t - drawStart) / 4200));
       const eased = prog < 0.5 ? 4*prog*prog*prog : 1 - Math.pow(-2*prog + 2, 3) / 2;
       revealN = settled ? Math.floor(eased * (base.length - 1)) : -1;
-      const swayK = reduceMotion ? 0 : 1;
+      const sway = reduceMotion ? 0 : 1, damp = Math.pow(.91, dt), kk = .07 * dt;
       let d = '';
       for(let i = 0; i < base.length; i++){
-        const p = disp[i];
-        const w = anchorW[i];
-        // gentle idle sway (dampened to zero at each circle)
-        let tx = (Math.sin(t*0.0011 + i*0.22) * 5 + Math.sin(t*0.0023 - i*0.31) * 2) * ux * w * swayK;
-        let ty = (Math.cos(t*0.0009 + i*0.26) * 5 + Math.cos(t*0.0019 - i*0.34) * 2) * uy * w * swayK;
-        // soft bend away from the cursor
-        if(mouse){
-          const mx = base[i][0] + p.dx - mouse.x, my = base[i][1] + p.dy - mouse.y;
-          const dist = Math.sqrt(mx*mx + my*my);
-          if(dist < 10 && dist > 0.01){
-            const push = (10 - dist) / 10 * 2.0 * w;
-            tx += (mx / dist) * push;
-            ty += (my / dist) * push;
+        const p = disp[i], w = aw[i];
+        let tx = (Math.sin(t*0.0011 + i*0.09) * 6 + Math.sin(t*0.0023 - i*0.13) * 2.4) * w * sway;
+        let ty = (Math.cos(t*0.0009 + i*0.10) * 6 + Math.cos(t*0.0019 - i*0.14) * 2.4) * w * sway;
+        if(mouse){                                           // soft bend away from the cursor (90px radius, in real pixels)
+          const mx = base[i][0] + p.x - mouse.x, my = base[i][1] + p.y - mouse.y, dist = Math.hypot(mx, my);
+          if(dist < 90 && dist > 0.5){ const k = (1 - dist/90); const push = k*k * 16 * w; tx += mx/dist*push; ty += my/dist*push; }
+        }
+        p.vx += (tx - p.x) * kk; p.vy += (ty - p.y) * kk;
+        p.vx *= damp; p.vy *= damp;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if(i <= revealN) d += (i ? 'L' : 'M') + ((base[i][0] + p.x) * ux).toFixed(2) + ' ' + ((base[i][1] + p.y) * uy).toFixed(2) + ' ';
+      }
+      eGlow.setAttribute('d', d); eMid.setAttribute('d', d); eCore.setAttribute('d', d); eDash.setAttribute('d', d);
+      // light travelling along the thread: constant pixel speed, soft tails, fading in/out at the ends so the loop never pops
+      if(base.length > 2){
+        for(let o = 0; o < NORB; o++){
+          const dist = reduceMotion ? baseLen * (o + .5) / NORB : ((t * 0.001 * SPEED) + o * baseLen / NORB) % baseLen;
+          const pulse = reduceMotion ? 1 : (0.78 + 0.22 * Math.sin(t*0.0035 + o*1.3));
+          const rr = (o % 2 ? 2.3 : 3.1) * pulse;
+          const head = at(dist);
+          const tip = revealN >= base.length - 1 ? 1 : 1 - ss(revealN - 8, revealN - 1, head[2]);          // hide anything past the still-drawing tip
+          const vis = tip * ss(0, .04, dist / baseLen) * ss(0, .04, 1 - dist / baseLen);
+          placeDot(orbs[o], head, rr, vis);
+          placeDot(halos[o], head, rr * 3.4, vis);
+          for(let g = 0; g < NGHOST; g++){
+            const gd = dist - (g + 1) * GHOST_GAP;
+            if(gd <= 0){ ghosts[o][g].setAttribute('opacity', '0'); continue; }
+            const gp = at(gd);
+            placeDot(ghosts[o][g], gp, rr * (0.78 - g*0.17), vis * (0.55 - g*0.15) * ss(0, .04, gd / baseLen));
           }
         }
-        // spring toward the wobble target — string keeps swaying after the cursor passes
-        p.vx += (tx - p.dx) * 0.07; p.vy += (ty - p.dy) * 0.07;
-        p.vx *= 0.91; p.vy *= 0.91;
-        p.dx += p.vx; p.dy += p.vy;
-        if(i <= revealN) d += (i === 0 ? 'M' : 'L') + (base[i][0] + p.dx).toFixed(2) + ' ' + (base[i][1] + p.dy).toFixed(2) + ' ';
       }
-      eGlow.setAttribute('d', d); eCore.setAttribute('d', d); eDash.setAttribute('d', d);
-      // energy orbs traveling along the thread toward each circle — paced by the
-      // stable base length so they flow smoothly forward even while the string wobbles
-      if(canMeasure && baseLen > 0){
-        try{
-          const liveLen = eCore.getTotalLength();
-          orbs.forEach((o, i) => {
-            const dist = (t*0.014 + i*baseLen/3) % baseLen;
-            const pt = eCore.getPointAtLength(Math.min(dist, liveLen));
-            o.setAttribute('cx', pt.x); o.setAttribute('cy', pt.y);
-            const pulse = 0.75 + 0.25 * Math.sin(t*0.004 + i*1.3), rr = (i % 2 ? 2.4 : 3.2) * pulse;
-            o.setAttribute('rx', (rr*ux).toFixed(3)); o.setAttribute('ry', (rr*uy).toFixed(3));
-            const h = halos[i];
-            h.setAttribute('cx', pt.x); h.setAttribute('cy', pt.y);
-            h.setAttribute('rx', (rr*3.2*ux).toFixed(3)); h.setAttribute('ry', (rr*3.2*uy).toFixed(3));
-          });
-        }catch(e){}
-      }
-    }
-    requestAnimationFrame(stringFrame);
+    }catch(e){ /* decorative — never block the world */ }
   }
   requestAnimationFrame(stringFrame);
   } catch(err){ /* decorative — never block the world */ }
@@ -5473,12 +5609,16 @@ function onYouTubeIframeAPIReady(){
 
   // ---------- FINAL ACT ----------
   const finalReturn = document.getElementById('finalReturn');
-  document.getElementById('toFinalBtn').addEventListener('click', () => {
+  function playFinalAct(){
     showScene('final');
     finalReturn.classList.remove('show');
     const finalLines = ['f1','f2','f3','f4','f5','f6','f7','f8','fEnd'].map(id => document.getElementById(id));
     finalLines.forEach(el => el.classList.remove('visible')); // clear any leftover state from a previous viewing (e.g. "For Sakura" staying lit)
-    playSequence(finalLines, { holds:[3200,3200,3200,3200,4500,4200,3800,5200,4000], gap:800, keepLast:true, onDone: () => finalReturn.classList.add('show') });
+    playSequence(finalLines, { holds:[3600,3000,4000,2800,4200,4200,3800,7000,4200], gap:800, keepLast:true, onDone: () => finalReturn.classList.add('show') });
+  }
+  window.__wtbFinalAct = playFinalAct;   // the old ending is kept, just no longer wired to the button
+  document.getElementById('toFinalBtn').addEventListener('click', () => {
+    if(window.__wtbReturnToWorlds) window.__wtbReturnToWorlds(); else playFinalAct();
   });
   finalReturn.addEventListener('click', () => {
     showScene('hub');
@@ -6603,7 +6743,7 @@ function onYouTubeIframeAPIReady(){
         let rec = calEdit ? list.filter(p => p.id === calEdit)[0] : null;
         if(rec){ rec.title = title; rec.date = date; rec.time = time; rec.note = note; rec.rem = rem; rec.u = now; rec.ud = me; }
         else{
-          rec = { id:'p' + now.toString(36) + Math.random().toString(36).slice(2, 5), title, date, time, note, rem, by:deviceName(), dev:me, t:now, u:now, ud:me };
+          rec = { id:'p' + now.toString(36) + Math.random().toString(36).slice(2, 5), title, date, time, note, rem, by:deviceName(), did:nfDid(), dev:me, t:now, u:now, ud:me };
           list.push(rec);
         }
         plansSave(list);
@@ -7266,7 +7406,9 @@ function onYouTubeIframeAPIReady(){
     var label = row.firstChild, busy = false;
     function paint(){ label.textContent = (rload()[act] || []).length + ' of ' + N + ' opened · reshuffles when all are open'; }
     paint();
-    grid.classList.add('dealing'); setTimeout(function(){ grid.classList.remove('dealing'); }, 900 + N * 45);
+    if(grid._dealT) clearTimeout(grid._dealT);
+    grid.classList.remove('dealt'); grid.classList.add('dealing');
+    grid._dealT = setTimeout(function(){ grid.classList.add('dealt'); grid.classList.remove('dealing'); }, 700 + N * 45);
     function go(){
       if(busy) return; busy = true;
       grid.classList.remove('dealing'); grid.classList.add('shuffling');
@@ -7340,7 +7482,29 @@ function onYouTubeIframeAPIReady(){
     'approximately 0.5 bajillion light years away (it got closer)',
     'a very respectable number of light years away',
     'give or take a bajillion light years away',
-    '2 bajillion light years away, no traffic'
+    '2 bajillion light years away, no traffic',
+    'about 8 bajillion light years away, wifi stuck on 1 bar',
+    'roughly 5 gazillion light years away, my legs are tired',
+    'approx. 12 bajillion light years away. are we there yet?',
+    'a bajillion light years away, but who is counting (me. i am.)',
+    'exactly 1 hug away from zero light years',
+    'about 6 bajillion light years away, packing snacks',
+    'roughly 99 gazillion light years away, google maps gave up',
+    'approximately 4 bajillion light years away, the rocket needs gas',
+    '0.0001 light years away if i stretch my arms really far',
+    'a few bajillion light years away, flights are expensive okay',
+    'approx. 11 bajillion light years away, asked the sun for directions',
+    'about 3 gazillion light years away, the moon says hi',
+    'roughly 1 bajillion light years away, stop making me walk',
+    'a bajillion light years away, but my love has unlimited data',
+    'approximately 2.5 bajillion light years away, rounded up for drama',
+    'about 13 bajillion light years away, my calculator cried',
+    'only 1 bajillion light years away, practically next door',
+    'distance: yes',
+    'approximately 8 bajillion light years away, seatbelt optional',
+    'one very long hug away',
+    'about 7 bajillion light years away, an alien offered me a ride',
+    'roughly 20 gazillion light years away, my phone says low battery'
   ], last = -1;
   function pick(){ var i; do{ i = Math.floor(Math.random()*LINES.length); }while(i === last); last = i; return LINES[i]; }
   function swap(){ txt.classList.add('swap'); setTimeout(function(){ txt.textContent = pick(); txt.classList.remove('swap'); }, 360); }
@@ -7773,8 +7937,250 @@ function onYouTubeIframeAPIReady(){
     removeEventListener('keydown', enter);
     run();
   };
-  gate.addEventListener('pointerdown', enter);
-  addEventListener('keydown', enter);
+  /* coming back from inside the world: skip the tap gate + loader, go straight to the world-select menu */
+  let MENU_ONLY = false; try{ MENU_ONLY = sessionStorage.getItem('dx_menu_only') === '1'; sessionStorage.removeItem('dx_menu_only'); }catch(e){}
+  async function runMenuOnly(){
+    started = true; gate.remove(); intro.classList.remove('gated');
+    ['pointerdown','keydown'].forEach(ev => addEventListener(ev, ready, { once:true }));   // first tap unlocks sound
+    ready(); await sleep(reduce ? 60 : 420);
+    const loud = !!(ac && ac.state === 'running');
+    menu.style.display = 'flex'; menu.style.clipPath = 'inset(100%)';
+    if (loud) sfx.scrape(1.5);
+    await scrape(stage, menu, reduce ? 350 : 1500);
+    stage.style.display = 'none'; faceDead = true; menu.style.clipPath = 'none';
+    menu.classList.add('arrive'); setTimeout(() => menu.classList.remove('arrive'), 1500);
+    if (loud){ sfx.star(); setTimeout(sfx.ready, 260); }
+    menuReady = true;
+    document.dispatchEvent(new Event('devxhu:intro-done'));
+    cards[0].focus({ preventScroll: true });
+  }
+  if (MENU_ONLY) runMenuOnly();
+  else { gate.addEventListener('pointerdown', enter); addEventListener('keydown', enter); }
+})();
+</script>
+<script>
+/* Return to the worlds: warp streaks, pixel swallow, shockwave and synthesized sounds, then back to world select */
+(function(){
+  var busy = false;
+  window.__wtbReturnToWorlds = function(){
+    if(busy) return; busy = true;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go(){ try{ sessionStorage.setItem('dx_menu_only', '1'); }catch(e){} try{ document.documentElement.style.background = '#07030f'; }catch(e){} location.reload(); }
+    try{
+      var W = innerWidth, H = innerHeight, R = Math.random;
+      var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      cv.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;z-index:100001;';
+      document.documentElement.appendChild(cv);
+      var cx = cv.getContext('2d');
+      var ac = null, m = null;
+      try{ var AC = window.AudioContext || window.webkitAudioContext; ac = new AC(); if(ac.state === 'suspended') ac.resume(); m = ac.createGain(); m.gain.value = .6; m.connect(ac.destination); }catch(e){ ac = null; }
+      function tone(f, dur, type, v, at, f2){ if(!ac) return; var t = ac.currentTime + (at || 0), o = ac.createOscillator(), g = ac.createGain();
+        o.type = type || 'sine'; o.frequency.setValueAtTime(f, t); if(f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+        g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+        o.connect(g); g.connect(m); o.start(t); o.stop(t + dur + .05); }
+      function noise(dur, v, f1, f2, at){ if(!ac) return; var t = ac.currentTime + (at || 0), n = Math.floor(ac.sampleRate * dur), b = ac.createBuffer(1, n, ac.sampleRate), a = b.getChannelData(0);
+        for(var i = 0; i < n; i++) a[i] = R() * 2 - 1;
+        var s = ac.createBufferSource(); s.buffer = b; var f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2;
+        f.frequency.setValueAtTime(f1, t); f.frequency.exponentialRampToValueAtTime(f2, t + dur);
+        var g = ac.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + dur * .35); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+        s.connect(f); f.connect(g); g.connect(m); s.start(t); }
+      var K = reduce ? .35 : 1;                       // reduced motion = same story, much shorter
+      tone(80, 1.5*K, 'sawtooth', .045, 0, 1800); tone(160, 1.5*K, 'sine', .07, 0, 3200); noise(1.5*K, .12, 300, 6000, 0);
+      var steps = [0,3,5,7,10]; for(var i = 0; i < 22; i++){ var kk = i / 22; tone(330 * Math.pow(2, (steps[i % 5] + 5 * Math.floor(i / 5)) / 12), .05, 'square', .02, (.1 + kk * 1.3) * K); }
+      tone(110, .7, 'sine', .28, 1.45*K, 30); noise(.5, .16, 3000, 200, 1.45*K);
+      [784, 1046.5, 1318.5, 1568, 2093, 2637].forEach(function(f, j){ tone(f, .38, 'triangle', .05, (1.55*K) + j * .07); });
+      tone(2093, .9, 'sine', .03, 1.95*K); tone(3136, .9, 'sine', .02, 2.0*K);
+
+      var DUR = 2900 * K, T = function(ms){ return ms * K; };
+      var diag = Math.hypot(W, H) / 2, SC = ['#ffffff','#bfefff','#ffd0ea','#d9c8ff','#ffd86b'], FC = ['#ffffff','#ffd86b','#4df3ff','#ff5fa2'];
+      var stars = []; for(var s0 = 0; s0 < 170; s0++) stars.push({ a: R() * 6.283, r: .01 + R() * .12, v: .4 + R() * 1.1, c: SC[(R() * SC.length) | 0], s: R() < .2 ? 4 : 2 });
+      var CELL = Math.max(18, Math.round(Math.min(W, H) / 24)), cols = Math.ceil(W / CELL), rows = Math.ceil(H / CELL);
+      var thr = new Float32Array(cols * rows), te = new Float32Array(cols * rows).fill(-1), mx = Math.hypot(cols / 2, rows / 2);
+      for(var r = 0; r < rows; r++) for(var c = 0; c < cols; c++){ var dx = c + .5 - cols / 2, dy = r + .5 - rows / 2;
+        thr[r * cols + c] = Math.min(.99, Math.hypot(dx, dy) / mx * .8 + R() * .14 + .04 * Math.sin(Math.atan2(dy, dx) * 6) + .05); }
+      if(!reduce){ var b = document.body.style; b.transition = 'transform 1.6s cubic-bezier(.55,0,.9,.4), filter 1.6s ease'; b.transformOrigin = '50% 50%';
+        requestAnimationFrame(function(){ b.transform = 'scale(1.2)'; b.filter = 'blur(2px) brightness(1.3) saturate(1.3)'; }); }
+      var t0 = performance.now(), fs = Math.max(10, Math.min(22, Math.round(W / 22)));
+      function frame(now){
+        var t = now - t0; cx.clearRect(0, 0, W, H);
+        cx.fillStyle = 'rgba(8,3,18,' + (Math.min(t / T(700), 1) * .72) + ')'; cx.fillRect(0, 0, W, H);
+        var sp = Math.pow(Math.min(t / T(1500), 1), 2.2);
+        for(var i = 0; i < stars.length; i++){ var s = stars[i]; s.r += s.v * (.002 + sp * .06 / K);
+          if(s.r > 1.05){ s.r = .01 + R() * .05; s.a = R() * 6.283; }
+          var r0 = s.r * diag, len = (6 + sp * 70) * s.v, ca = Math.cos(s.a), sa = Math.sin(s.a), n = Math.max(1, Math.floor(len / 4));
+          cx.globalAlpha = Math.min(1, .25 + sp + s.r); cx.fillStyle = s.c;
+          for(var k = 0; k < n; k++){ var rr = r0 - k * 4; if(rr < 0) break; cx.fillRect(Math.round((W / 2 + ca * rr) / 2) * 2, Math.round((H / 2 + sa * rr) / 2) * 2, s.s, s.s); } }
+        cx.globalAlpha = 1;
+        var q = (t - T(1450)) / T(750);                                  // shockwave ring of pixels
+        if(q > 0 && q < 1){ var rad = q * diag * 1.1; cx.globalAlpha = 1 - q;
+          for(var d = 0; d < 80; d++){ var an = d / 80 * 6.283; cx.fillStyle = FC[1 + (d % 3)]; cx.fillRect(Math.round((W / 2 + Math.cos(an) * rad) / 2) * 2, Math.round((H / 2 + Math.sin(an) * rad) / 2) * 2, 6, 6); }
+          cx.globalAlpha = 1; }
+        var p = Math.max(0, Math.min((t - T(1100)) / T(1300), 1)); p = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        if(p > 0){ for(var i2 = 0; i2 < thr.length; i2++){ if(thr[i2] >= p) continue; if(te[i2] < 0) te[i2] = t;
+            var age = t - te[i2], fl = age < T(320); cx.fillStyle = fl ? FC[Math.min(3, (age / T(320) * 4) | 0)] : '#0b0418';
+            cx.fillRect((i2 % cols) * CELL, Math.floor(i2 / cols) * CELL, CELL, CELL); } }
+        if(!reduce){ var fq = (t - T(1450)) / 170; if(fq > 0 && fq < 1){ cx.fillStyle = 'rgba(255,255,255,' + ((1 - fq) * .5) + ')'; cx.fillRect(0, 0, W, H); } }
+        if(t > T(2000)){ var ta = Math.min((t - T(2000)) / T(400), 1);
+          cx.globalAlpha = ta; cx.font = fs + "px 'Press Start 2P', monospace"; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+          cx.fillStyle = '#ff5fa2'; cx.fillText('CHOOSE YOUR WORLD', W / 2 + 3, H / 2 + 3); cx.fillStyle = '#fff4ff'; cx.fillText('CHOOSE YOUR WORLD', W / 2, H / 2); cx.globalAlpha = 1; }
+        if(t < DUR) requestAnimationFrame(frame); else go();
+      }
+      requestAnimationFrame(frame);
+    }catch(e){ go(); }
+  };
+})();
+</script>
+<style>
+/* short (landscape-phone) screens: the return button shrinks to its portal icon so it stays out of the way */
+@media (max-height:520px){
+  .continue-link{ right:max(8px, env(safe-area-inset-right, 0px)); bottom:var(--rw-bottom, calc(env(safe-area-inset-bottom, 0px) + 8px)); }
+  .continue-link .rw-txt{ display:none; }
+  .continue-link button{ padding:8px; gap:0; }
+}
+</style>
+<script>
+/* "return to the worlds": sits bottom-right above the control dock; only on the valley hub, hidden while a panel is open */
+(function(){
+  var cl = document.getElementById('continueLink'), hub = document.getElementById('scene-hub'), ov = document.getElementById('overlay'), dock = null, dockRO = null;
+  if(!cl || !hub) return;
+  document.body.appendChild(cl);
+  function place(){
+    cl.style.removeProperty('--rw-bottom');
+    if(!dock){ dock = document.getElementById('ctrlDock'); if(dock && window.ResizeObserver){ try{ dockRO = new ResizeObserver(place); dockRO.observe(dock); }catch(e){} } }   // the dock is built after load
+    if(!dock) return;
+    var d = dock.getBoundingClientRect(), b = cl.getBoundingClientRect();
+    // only dodge the dock's real buttons; the empty corner of its glass pill is fine to sit on
+    var hit = [].slice.call(dock.querySelectorAll('button')).some(function(e){ var r = e.getBoundingClientRect(); return r.width > 0 && !(b.right < r.left - 8 || b.left > r.right + 8 || b.bottom < r.top - 8 || b.top > r.bottom + 8); });
+    if(d.width && hit) cl.style.setProperty('--rw-bottom', (innerHeight - d.top + 16) + 'px');
+  }
+  var tick = 0;   // the dock slides in after load and its position (not size) changes, so re-check gently while the button is showing
+  function sync(){
+    var on = hub.classList.contains('active') && !(ov && ov.classList.contains('open')); cl.classList.toggle('rw-on', on);
+    if(on){ place(); if(!tick) tick = setInterval(place, 900); } else if(tick){ clearInterval(tick); tick = 0; }
+  }
+  try{ var mo = new MutationObserver(sync); mo.observe(hub, { attributes:true, attributeFilter:['class'] }); if(ov) mo.observe(ov, { attributes:true, attributeFilter:['class'] }); }catch(e){}
+  addEventListener('resize', place); addEventListener('orientationchange', place);
+  try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(place); }catch(e){}
+  sync();
+})();
+</script>
+
+<script>
+/* gate burst: sparks gather during blooming, then a shockwave, rays, petals and a soft flare carry us into the valley */
+(function(){
+  var arch = document.getElementById('arch'); if(!arch) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cv, cx, W, H, raf = 0, tB = 0, tO = 0, gather = [], sparks = [], petals = [], lastNow = 0, C = {x:0,y:0,s:300};
+  var COLS = ['255,208,234','205,182,232','143,216,238','255,246,194','243,201,230'], TILT = -0.384;
+  function rnd(a,b){ return a + Math.random()*(b-a); }
+  function clamp(v,a,b){ return v < a ? a : (v > b ? b : v); }
+  function ease(p){ return p*p*(3-2*p); }
+  function ensure(){
+    if(cv) return;
+    cv = document.createElement('canvas'); cv.setAttribute('aria-hidden','true');
+    cv.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:120;';
+    document.body.appendChild(cv); cx = cv.getContext('2d'); size();
+    window.addEventListener('resize', size);
+  }
+  function size(){
+    var d = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    cv.width = Math.round(W*d); cv.height = Math.round(H*d); cx.setTransform(d,0,0,d,0,0);
+  }
+  function center(){ var r = arch.getBoundingClientRect(); C = {x:r.left + r.width/2, y:r.top + r.height/2, s:Math.min(r.width, r.height)}; }
+  function tilt(x, y){ var c = Math.cos(TILT), s = Math.sin(TILT); return {x: C.x + x*c - y*s, y: C.y + x*s + y*c}; }
+  function startBloom(){
+    ensure(); center(); tB = performance.now(); gather = [];
+    var U = Math.max(W, H);
+    for(var i = 0; i < 70; i++) gather.push({a:rnd(0,6.283), d:rnd(.55,1.1)*U*.3, sp:rnd(.9,1.8)*(Math.random()<.5?-1:1), r:rnd(.8,2.1), col:COLS[i%5], dl:rnd(0,.45)});
+    loop();
+  }
+  function startOpen(){
+    ensure(); center(); tO = performance.now(); lastNow = tO; sparks = []; petals = [];
+    var U = Math.max(W, H), i, a;
+    for(i = 0; i < 130; i++){ a = rnd(0,6.283); sparks.push({x:0, y:0, vx:Math.cos(a), vy:Math.sin(a), v:rnd(.1,.55)*U, life:rnd(1.4,3.2), r:rnd(.7,2.2), col:COLS[i%5], star:Math.random()<.25, ph:rnd(0,6.283)}); }
+    for(i = 0; i < 26; i++){ a = rnd(0,6.283); petals.push({x:0, y:0, vx:Math.cos(a), vy:Math.sin(a), v:rnd(.06,.3)*U, life:rnd(3.4,5), r:rnd(5,9), rot:rnd(0,6.283), vr:rnd(-2,2), sw:rnd(0,6.283)}); }
+    loop();
+  }
+  function star(x, y, r){
+    cx.beginPath(); cx.moveTo(x, y-r); cx.quadraticCurveTo(x, y, x+r, y); cx.quadraticCurveTo(x, y, x, y+r);
+    cx.quadraticCurveTo(x, y, x-r, y); cx.quadraticCurveTo(x, y, x, y-r); cx.fill();
+  }
+  function dot(x, y, r, col, al){
+    cx.fillStyle = 'rgba(' + col + ',' + (al*.2) + ')'; cx.beginPath(); cx.arc(x, y, r*3.4, 0, 6.283); cx.fill();
+    cx.fillStyle = 'rgba(' + col + ',' + al + ')'; cx.beginPath(); cx.arc(x, y, r, 0, 6.283); cx.fill();
+  }
+  function loop(){ if(!raf) raf = requestAnimationFrame(frame); }
+  function frame(now){
+    raf = 0; cx.clearRect(0, 0, W, H); cx.globalCompositeOperation = 'lighter';
+    var U = Math.max(W, H), i, p, al;
+    if(tB && !tO){
+      var t = now - tB, glow = clamp(t/1300, 0, 1);
+      var g = cx.createRadialGradient(C.x, C.y, 0, C.x, C.y, C.s*.55);
+      g.addColorStop(0, 'rgba(255,225,242,' + (.5*ease(glow)) + ')'); g.addColorStop(1, 'rgba(241,154,209,0)');
+      cx.fillStyle = g; cx.fillRect(C.x - C.s, C.y - C.s, C.s*2, C.s*2);
+      gather.forEach(function(q){
+        p = clamp((t - q.dl*600)/1000, 0, 1); if(p <= 0) return;
+        var e = ease(p), d = q.d*(1 - e), ang = q.a + q.sp*e*1.6, pt = tilt(Math.cos(ang)*d, Math.sin(ang)*d*.5);
+        dot(pt.x, pt.y, q.r*(1 - .5*e), q.col, (1 - e*e)*.9);
+      });
+      raf = requestAnimationFrame(frame); return;
+    }
+    if(tO){
+      var T = now - tO, dt = Math.min((now - lastNow)/1000, .05); lastNow = now;
+      /* shockwaves */
+      var wc = ['255,208,234','205,182,232','143,216,238'];
+      for(i = 0; i < 3; i++){
+        p = (T - i*140)/2200; if(p <= 0 || p >= 1) continue;
+        var e1 = 1 - Math.pow(1 - p, 3), rx = e1*U*.75;
+        cx.strokeStyle = 'rgba(' + wc[i] + ',' + ((1 - p)*.8) + ')'; cx.lineWidth = 4*(1 - p) + .6;
+        cx.beginPath(); cx.ellipse(C.x, C.y, rx, rx*.45, TILT, 0, 6.283); cx.stroke();
+      }
+      /* rays */
+      p = T/2200;
+      if(p > 0 && p < 1){
+        var rl = (1 - Math.pow(1 - p, 2))*U*.8, ra = Math.sin(Math.PI*p)*.32;
+        cx.lineWidth = 1.2; cx.strokeStyle = 'rgba(255,236,246,' + ra + ')';
+        for(i = 0; i < 20; i++){
+          var aa = i/20*6.283 + T*.0002; cx.beginPath();
+          cx.moveTo(C.x + Math.cos(aa)*C.s*.12, C.y + Math.sin(aa)*C.s*.12);
+          cx.lineTo(C.x + Math.cos(aa)*rl, C.y + Math.sin(aa)*rl); cx.stroke();
+        }
+      }
+      /* sparks */
+      var alive = 0;
+      sparks.forEach(function(q){
+        var age = T/1000; if(age > q.life) return; alive++;
+        var k = 2.2, dist = q.v*(1 - Math.exp(-k*age))/k, al = clamp(1 - age/q.life, 0, 1)*(.65 + .35*Math.sin(age*9 + q.ph));
+        var x = C.x + q.vx*dist, y = C.y + q.vy*dist;
+        if(q.star){ cx.fillStyle = 'rgba(' + q.col + ',' + al + ')'; star(x, y, q.r*3.4); } else dot(x, y, q.r, q.col, al);
+      });
+      /* petals (normal blending so they stay pink) */
+      cx.globalCompositeOperation = 'source-over';
+      petals.forEach(function(q){
+        var age = T/1000; if(age > q.life) return; alive++;
+        var k = 1.6, dist = q.v*(1 - Math.exp(-k*age))/k, al = clamp(1 - age/q.life, 0, 1)*.85;
+        var x = C.x + q.vx*dist + Math.sin(age*2 + q.sw)*10, y = C.y + q.vy*dist + age*age*14;
+        cx.save(); cx.translate(x, y); cx.rotate(q.rot + q.vr*age); cx.fillStyle = 'rgba(247,182,208,' + al + ')';
+        cx.beginPath(); cx.ellipse(0, 0, q.r, q.r*.55, 0, 0, 6.283); cx.fill(); cx.restore();
+      });
+      /* soft flare that carries into the valley */
+      cx.globalCompositeOperation = 'source-over';
+      var fa = T < 1500 ? ease(T/1500) : (T < 2800 ? 1 : clamp(1 - (T - 2800)/2400, 0, 1)); fa *= .92;
+      if(fa > 0){
+        var fr = U*(.15 + .9*clamp(T/1800, 0, 1));
+        var fg = cx.createRadialGradient(C.x, C.y, 0, C.x, C.y, fr);
+        fg.addColorStop(0, 'rgba(255,244,250,' + fa + ')'); fg.addColorStop(.35, 'rgba(251,200,230,' + (fa*.7) + ')'); fg.addColorStop(1, 'rgba(241,154,209,0)');
+        cx.fillStyle = fg; cx.fillRect(0, 0, W, H);
+        cx.fillStyle = 'rgba(255,226,240,' + (fa*.3) + ')'; cx.fillRect(0, 0, W, H);
+      }
+      if(T < 5200){ raf = requestAnimationFrame(frame); return; }
+      cx.clearRect(0, 0, W, H); tO = 0; tB = 0;
+    }
+  }
+  new MutationObserver(function(){
+    if(arch.classList.contains('opening') && !tO) startOpen();
+    else if(arch.classList.contains('blooming') && !tB && !tO) startBloom();
+  }).observe(arch, {attributes:true, attributeFilter:['class']});
 })();
 </script>
 </body>
