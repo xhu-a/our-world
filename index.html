@@ -7991,7 +7991,7 @@ function onYouTubeIframeAPIReady(){
       [784, 1046.5, 1318.5, 1568, 2093, 2637].forEach(function(f, j){ tone(f, .38, 'triangle', .05, (1.55*K) + j * .07); });
       tone(2093, .9, 'sine', .03, 1.95*K); tone(3136, .9, 'sine', .02, 2.0*K);
 
-      var DUR = 2900 * K, T = function(ms){ return ms * K; };
+      var DUR = 3400 * K, T = function(ms){ return ms * K; };
       var diag = Math.hypot(W, H) / 2, SC = ['#ffffff','#bfefff','#ffd0ea','#d9c8ff','#ffd86b'], FC = ['#ffffff','#ffd86b','#4df3ff','#ff5fa2'];
       var stars = []; for(var s0 = 0; s0 < 170; s0++) stars.push({ a: R() * 6.283, r: .01 + R() * .12, v: .4 + R() * 1.1, c: SC[(R() * SC.length) | 0], s: R() < .2 ? 4 : 2 });
       var CELL = Math.max(18, Math.round(Math.min(W, H) / 24)), cols = Math.ceil(W / CELL), rows = Math.ceil(H / CELL);
@@ -7999,10 +7999,10 @@ function onYouTubeIframeAPIReady(){
       for(var r = 0; r < rows; r++) for(var c = 0; c < cols; c++){ var dx = c + .5 - cols / 2, dy = r + .5 - rows / 2;
         thr[r * cols + c] = Math.min(.99, Math.hypot(dx, dy) / mx * .8 + R() * .14 + .04 * Math.sin(Math.atan2(dy, dx) * 6) + .05); }
       if(!reduce){ var b = document.body.style; b.transition = 'transform 1.6s cubic-bezier(.55,0,.9,.4), filter 1.6s ease'; b.transformOrigin = '50% 50%';
-        requestAnimationFrame(function(){ b.transform = 'scale(1.2)'; b.filter = 'blur(2px) brightness(1.3) saturate(1.3)'; }); }
-      var t0 = performance.now(), fs = Math.max(10, Math.min(22, Math.round(W / 22)));
+        requestAnimationFrame(function(){ b.transform = 'scale(1.2)'; b.filter = 'brightness(1.25) saturate(1.2)'; }); }
+      var vt = 0, last = 0, fs = Math.max(10, Math.min(22, Math.round(W / 22)));
       function frame(now){
-        var t = now - t0; cx.clearRect(0, 0, W, H);
+        if(!last) last = now; vt += Math.min(Math.max(now - last, 0), 50); last = now; var t = vt; cx.clearRect(0, 0, W, H);
         cx.fillStyle = 'rgba(8,3,18,' + (Math.min(t / T(700), 1) * .72) + ')'; cx.fillRect(0, 0, W, H);
         var sp = Math.pow(Math.min(t / T(1500), 1), 2.2);
         for(var i = 0; i < stars.length; i++){ var s = stars[i]; s.r += s.v * (.002 + sp * .06 / K);
